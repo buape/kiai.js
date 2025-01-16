@@ -1,0 +1,87 @@
+name: Generate and Publish TypeScript Package
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs daily at midnight UTC
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  generate-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: |
+          npm install -g @openapitools/openapi-generator-cli
+          npm install -g typescript
+
+      - name: Download OpenAPI spec
+        run: |
+          curl https://api.kiai.app/v2/docs/json -o openapi.json
+
+      - name: Generate TypeScript package
+        run: |
+          openapi-generator-cli generate \
+            -i openapi.json \
+            -g typescript-fetch \
+            -o generated \
+            --additional-properties=npmName=kiai.js,npmVersion=2.0.0,supportsES6=true,useSingleRequestParameter=true
+
+      - name: Prepare package for publishing
+        working-directory: ./generated
+        run: |
+          # Add TypeScript compilation
+          echo '{
+            "compilerOptions": {
+              "target": "es6",
+              "module": "commonjs",
+              "declaration": true,
+              "outDir": "./dist",
+              "strict": true,
+              "esModuleInterop": true,
+              "skipLibCheck": true,
+              "forceConsistentCasingInFileNames": true
+            },
+            "include": ["src/**/*"],
+            "exclude": ["node_modules", "dist"]
+          }' > tsconfig.json
+
+          # Update package.json
+          jq '.scripts.prepare = "npm run build" | .scripts.build = "tsc"' package.json > temp.json && mv temp.json package.json
+
+          # Install dependencies and build
+          npm install
+          npm run build
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Commit and push changes
+        run: |
+          # Copy generated files to root (or your preferred directory)
+          cp -r generated/* .
+
+          # Add all changes
+          git add .
+
+          # Create commit with timestamp
+          git commit -m "chore: Update generated TypeScript package [$(date +'%Y-%m-%d %H:%M:%S')]" || echo "No changes to commit"
+
+          # Push changes
+          git push
+
+      # - name: Publish to NPM
+      #   working-directory: ./generated
+      #   run: npm publish --access public
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
