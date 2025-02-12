@@ -13,7 +13,8 @@
 		"publish": "bun run build && changeset version && changeset publish --no-git-tag",
 		"publish:snapshot": "bun run build && changeset version --snapshot beta && changeset publish --tag beta --no-git-tag",
 		"test": "bun test",
-		"typecheck": "tsc --noEmit"
+		"typecheck": "tsc --noEmit",
+		"typedoc": "typedoc"
 	},
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
@@ -35,9 +36,13 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
-		"@changesets/cli": "^2.27.12",
+		"@changesets/cli": "2.27.12",
 		"@types/bun": "1.2.2",
-		"bun-plugin-dts": "0.3.0"
+		"bun-plugin-dts": "0.3.0",
+		"typedoc": "0.27.7",
+		"typedoc-plugin-frontmatter": "1.1.2",
+		"typedoc-plugin-markdown": "4.4.2",
+		"typedoc-plugin-mdn-links": "4.0.12"
 	},
 	"files": [
 		"dist",

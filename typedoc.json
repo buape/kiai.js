@@ -1,4 +1,28 @@
 {
-	"extends": ["../../typedoc.base.json"],
-	"entryPoints": ["src/index.ts"]
+	"$schema": "https://typedoc.org/schema.json",
+	"name": "kiai.js",
+	"includeVersion": true,
+	"out": "docs",
+	"plugin": [
+		"typedoc-plugin-mdn-links",
+		"typedoc-plugin-markdown",
+		"typedoc-plugin-frontmatter",
+		"./typedoc-formatter.mjs"
+	],
+	"basePath": "src/",
+	"disableSources": true,
+	"readme": "none",
+	"hidePageHeader": true,
+	"hideBreadcrumbs": true,
+	"hideGroupHeadings": true,
+	"hidePageTitle": true,
+	"indexFormat": "table",
+	"parametersFormat": "table",
+	"classPropertiesFormat": "table",
+	"enumMembersFormat": "table",
+	"typeDeclarationFormat": "table",
+	"propertyMembersFormat": "table",
+	"interfacePropertiesFormat": "table",
+	"fileExtension": ".mdx",
+	"entryFileName": "index"
 }
