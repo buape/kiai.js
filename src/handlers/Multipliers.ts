@@ -1,4 +1,3 @@
-import { BaseHandler } from "./BaseHandler"
 import type {
 	ChannelMultiplier,
 	CountResponse,
@@ -6,6 +5,7 @@ import type {
 	MultiplierResponse,
 	RoleMultiplier
 } from "../types"
+import { BaseHandler } from "./BaseHandler"
 
 export class Multipliers extends BaseHandler {
 	async getMultipliers(guildId: string) {

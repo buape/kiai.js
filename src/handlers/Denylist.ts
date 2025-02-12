@@ -1,5 +1,5 @@
+import type { CountResponse, DenylistEntry, Denylists } from "../types"
 import { BaseHandler } from "./BaseHandler"
-import type { CountResponse, Denylists, DenylistEntry } from "../types"
 
 export class Denylist extends BaseHandler {
 	/**
