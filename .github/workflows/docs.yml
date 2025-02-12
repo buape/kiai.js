@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - 'src/**'
+      - 'typedoc.json'
+      - 'typedoc-formatter.mjs'
   workflow_dispatch:
 
 jobs:
