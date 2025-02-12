@@ -34,6 +34,9 @@ export class Leveling extends BaseHandler {
 	}
 
 	async addXp(guildId: string, userId: string, xp: number) {
+		if (!Number.isInteger(xp) || xp <= 0) {
+			throw new Error("XP must be a positive integer")
+		}
 		const result = await this._handler.request<SuccessResponse>(
 			`/${guildId}/member/${userId}/xp`,
 			"PATCH",
@@ -46,6 +49,9 @@ export class Leveling extends BaseHandler {
 	}
 
 	async removeXp(guildId: string, userId: string, xp: number) {
+		if (!Number.isInteger(xp) || xp <= 0) {
+			throw new Error("XP must be a positive integer")
+		}
 		const result = await this._handler.request<SuccessResponse>(
 			`/${guildId}/member/${userId}/xp`,
 			"PATCH",
@@ -58,6 +64,9 @@ export class Leveling extends BaseHandler {
 	}
 
 	async setXp(guildId: string, userId: string, xp: number) {
+		if (!Number.isInteger(xp) || xp < 0) {
+			throw new Error("XP must be a non-negative integer")
+		}
 		const result = await this._handler.request<SuccessResponse>(
 			`/${guildId}/member/${userId}/xp`,
 			"PUT",
