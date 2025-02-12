@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { verifyClient, ids } from "./_setup"
 import type { ChannelMultiplier, RoleMultiplier } from "../src"
+import { ids, verifyClient } from "./_setup"
 
 describe("Multipliers", () => {
 	test("CRUD operations", async () => {

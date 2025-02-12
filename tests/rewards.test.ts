@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { verifyClient, ids } from "./_setup"
 import type { RoleReward } from "../src"
+import { ids, verifyClient } from "./_setup"
 
 describe("Rewards", () => {
 	test("CRUD operations", async () => {
@@ -42,7 +42,7 @@ describe("Rewards", () => {
 			guildId: ids.server,
 			level: 10,
 			message: "Congratulations on reaching level 10!",
-			channelId: ids.server // Using server ID as channel ID for testing
+			channelId: ids.channel
 		}
 		await client.rewards.createReward(ids.server, messageReward)
 

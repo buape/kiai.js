@@ -1,5 +1,5 @@
-import type { Message, Reward } from "../types"
 import { BaseHandler } from "."
+import type { CountResponse, Reward, SuccessResponse } from "../types"
 
 export class Rewards extends BaseHandler {
 	async getRewards(guildId: string) {
@@ -18,7 +18,7 @@ export class Rewards extends BaseHandler {
 	}
 
 	async clearRewards(guildId: string) {
-		const result = await this._handler.request<Message>(
+		const result = await this._handler.request<SuccessResponse & CountResponse>(
 			`/${guildId}/rewards`,
 			"DELETE",
 			{},
@@ -28,7 +28,7 @@ export class Rewards extends BaseHandler {
 	}
 
 	async deleteReward(guildId: string, id: string) {
-		const result = await this._handler.request<Message>(
+		const result = await this._handler.request<SuccessResponse>(
 			`/${guildId}/rewards/${id}`,
 			"DELETE"
 		)

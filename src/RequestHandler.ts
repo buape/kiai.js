@@ -34,7 +34,7 @@ export class RequestHandler {
 		noError = false,
 		customBaseUrl?: string
 	): Promise<T> {
-		const url = `${customBaseUrl ?? this.baseURL}${endpoint}${toQueryString(query)}`
+		const url = `${customBaseUrl ?? this.baseURL}${endpoint}${new URLSearchParams(query).toString()}`
 		const options = {
 			method,
 			headers: {
@@ -102,30 +102,4 @@ export class RequestHandler {
 		if (this.debug) console.debug("API Error: \n", res, errorData)
 		throw new APIError(res.status, errorData)
 	}
-}
-
-type replacerType = "!" | "'" | "(" | ")" | "~" | "%20" | "%00"
-const replacers: Record<string, replacerType> = {
-	"!": "!",
-	"'": "'",
-	"(": "(",
-	")": ")",
-	"~": "~",
-	" ": "%20",
-	"\0": "%00"
-}
-
-const encode = (str: string) => {
-	return str.replace(/[!'()~]|%20|%00/g, (match) => replacers[match])
-}
-
-const toQueryString = (data: { [key: string]: string }) => {
-	if (Object.entries(data).length === 0) return ""
-	let result = ""
-	for (const [key, value] of Object.entries(data)) {
-		// biome-ignore lint/suspicious/noAssignInExpressions: This is cleaner
-		result.length === 0 ? (result = "?") : (result += "&")
-		result += `${encode(key)}=${encode(value)}`
-	}
-	return result
 }

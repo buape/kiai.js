@@ -1,4 +1,4 @@
-import { build, type BuildConfig } from "bun"
+import { type BuildConfig, build } from "bun"
 import dts from "bun-plugin-dts"
 
 const defaultBuildConfig: BuildConfig = {

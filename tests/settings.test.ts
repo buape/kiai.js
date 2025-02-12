@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { verifyClient, ids } from "./_setup"
 import { ApiPermission } from "../src"
+import { ids, verifyClient } from "./_setup"
 
 describe("Settings", () => {
 	test("Get settings", async () => {

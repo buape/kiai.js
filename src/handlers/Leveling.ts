@@ -1,5 +1,5 @@
-import type { Leaderboard, LevelData, Message } from "../types"
 import { BaseHandler } from "."
+import type { Leaderboard, LevelData, SuccessResponse } from "../types"
 
 export class Leveling extends BaseHandler {
 	async getLeaderboard(
@@ -7,6 +7,15 @@ export class Leveling extends BaseHandler {
 		start: number | undefined,
 		end: number | undefined
 	) {
+		if (start !== undefined && start < 0) {
+			throw new Error("Start parameter must be non-negative")
+		}
+		if (end !== undefined && end < 0) {
+			throw new Error("End parameter must be non-negative")
+		}
+		if (start !== undefined && end !== undefined && start >= end) {
+			throw new Error("Start parameter must be less than end parameter")
+		}
 		const result = await this._handler.request<Leaderboard>(
 			`/${guildId}/leaderboard${
 				start !== undefined
@@ -25,7 +34,7 @@ export class Leveling extends BaseHandler {
 	}
 
 	async addXp(guildId: string, userId: string, xp: number) {
-		const result = await this._handler.request<Message>(
+		const result = await this._handler.request<SuccessResponse>(
 			`/${guildId}/member/${userId}/xp`,
 			"PATCH",
 			{},
@@ -37,7 +46,7 @@ export class Leveling extends BaseHandler {
 	}
 
 	async removeXp(guildId: string, userId: string, xp: number) {
-		const result = await this._handler.request<Message>(
+		const result = await this._handler.request<SuccessResponse>(
 			`/${guildId}/member/${userId}/xp`,
 			"PATCH",
 			{},
@@ -49,7 +58,7 @@ export class Leveling extends BaseHandler {
 	}
 
 	async setXp(guildId: string, userId: string, xp: number) {
-		const result = await this._handler.request<Message>(
+		const result = await this._handler.request<SuccessResponse>(
 			`/${guildId}/member/${userId}/xp`,
 			"PUT",
 			{},
