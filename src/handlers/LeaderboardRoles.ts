@@ -1,4 +1,4 @@
-import { BaseHandler } from "."
+import { BaseHandler } from "./BaseHandler"
 import type { LeaderboardRole, SuccessResponse } from "../types"
 
 export class LeaderboardRoles extends BaseHandler {
@@ -34,7 +34,6 @@ export class LeaderboardRoles extends BaseHandler {
 	/**
 	 * Delete all leaderboard roles for a guild
 	 * @param guildId The guild ID to delete roles from
-	 * @param roleId The role ID to delete
 	 */
 	async clearLeaderboardRoles(guildId: string) {
 		const result = await this._handler.request<SuccessResponse>(

@@ -1,4 +1,4 @@
-import { BaseHandler } from "."
+import { BaseHandler } from "./BaseHandler"
 import type { GuildSettings } from "../types"
 
 export class Settings extends BaseHandler {

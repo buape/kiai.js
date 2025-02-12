@@ -235,7 +235,7 @@ export type DenylistEntry = {
 	channelId?: string
 }
 
-export type Denylist = {
+export type Denylists = {
 	guildId: string
 	users: DenylistEntry[]
 	roles: DenylistEntry[]

@@ -1,4 +1,4 @@
-import { BaseHandler } from "."
+import { BaseHandler } from "./BaseHandler"
 import type {
 	ChannelMultiplier,
 	CountResponse,

@@ -11,7 +11,6 @@ export class Misc extends BaseHandler {
 
 	/**
 	 * Post a virtual message
-	 * @param guildId The guild ID to post the message in
 	 * @param message The message to post
 	 */
 	public async postVirtualMessage(message: VirtualMessage) {

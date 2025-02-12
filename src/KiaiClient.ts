@@ -1,12 +1,13 @@
 import { RequestHandler } from "./RequestHandler"
-import * as handlers from "./handlers"
-import type { DenylistHandler } from "./handlers/Denylist"
-import type { LeaderboardRoles } from "./handlers/LeaderboardRoles"
-import type { Leveling } from "./handlers/Leveling"
-import type { Misc } from "./handlers/Misc"
-import type { Multipliers } from "./handlers/Multipliers"
-import type { Rewards } from "./handlers/Rewards"
-import type { Settings } from "./handlers/Settings"
+import {
+	Denylist,
+	LeaderboardRoles,
+	Leveling,
+	Misc,
+	Multipliers,
+	Rewards,
+	Settings
+} from "./handlers"
 import type { RootResponse } from "./types"
 
 export class KiaiClient {
@@ -16,7 +17,7 @@ export class KiaiClient {
 	readonly debug: boolean
 	readonly _requestHandler: RequestHandler
 
-	readonly denylist: DenylistHandler
+	readonly denylist: Denylist
 	readonly leveling: Leveling
 	readonly multipliers: Multipliers
 	readonly rewards: Rewards
@@ -26,18 +27,28 @@ export class KiaiClient {
 
 	/**
 	 * Create a new KiaiClient
-	 * @param apiKey The API key to use
-	 * @param options The options to use
-	 * @param options.baseURL The base URL to use
-	 * @param options.debug Whether to enable debug mode
-	 * @constructor
+	 * @param apiKey The API key to use for Kiai's API
+	 * @param options The options to use to initialize the client
 	 */
 	constructor(
 		apiKey: string,
 		options?: {
+			/**
+			 * The base URL to use for Kiai's API
+			 */
 			baseURL?: string
+			/**
+			 * The version of the API to use
+			 */
 			version?: `v${number}`
+			/**
+			 * Whether to enable debug logging
+			 */
 			debug?: boolean
+			/**
+			 * The fetch function to use for Kiai's API
+			 * If you want to use your own fetch function (e.g. for a custom proxy), you can pass it here
+			 */
 			fetchFunction?: (
 				url: URL | string,
 				init?: RequestInit | undefined
@@ -55,13 +66,13 @@ export class KiaiClient {
 			options?.fetchFunction ?? fetch
 		)
 
-		this.denylist = new handlers.DenylistHandler(this._requestHandler)
-		this.leveling = new handlers.Leveling(this._requestHandler)
-		this.multipliers = new handlers.Multipliers(this._requestHandler)
-		this.rewards = new handlers.Rewards(this._requestHandler)
-		this.settings = new handlers.Settings(this._requestHandler)
-		this.leaderboardRoles = new handlers.LeaderboardRoles(this._requestHandler)
-		this.misc = new handlers.Misc(this._requestHandler)
+		this.denylist = new Denylist(this._requestHandler)
+		this.leveling = new Leveling(this._requestHandler)
+		this.multipliers = new Multipliers(this._requestHandler)
+		this.rewards = new Rewards(this._requestHandler)
+		this.settings = new Settings(this._requestHandler)
+		this.leaderboardRoles = new LeaderboardRoles(this._requestHandler)
+		this.misc = new Misc(this._requestHandler)
 	}
 
 	/**
