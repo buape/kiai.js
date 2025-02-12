@@ -23,12 +23,12 @@ export class Multipliers extends BaseHandler {
 			{
 				type: data.type,
 				multiplier: data.multiplier,
-				...(data.type === "role"
-					? { roleId: (data as RoleMultiplier).roleId }
-					: {}),
-				...(data.type === "channel"
-					? { channelId: (data as ChannelMultiplier).channelId }
-					: {})
+				...(data.type === "role" && {
+					roleId: (data as RoleMultiplier).roleId
+				}),
+				...(data.type === "channel" && {
+					channelId: (data as ChannelMultiplier).channelId
+				})
 			}
 		)
 		return result
