@@ -2,7 +2,7 @@
 	"name": "kiai.js",
 	"description": "The official JS/TS API library for Kiai",
 	"type": "module",
-	"version": "3.0.0-beta",
+	"version": "3.0.0",
 	"author": {
 		"name": "Shadow",
 		"email": "shadow@buape.com"
@@ -44,10 +44,22 @@
 		"typedoc-plugin-markdown": "4.4.2",
 		"typedoc-plugin-mdn-links": "4.0.12"
 	},
-	"files": ["dist", "LICENSE"],
+	"files": [
+		"dist",
+		"LICENSE"
+	],
 	"engines": {
 		"node": ">=20.18.1"
 	},
-	"keywords": ["kiai", "api", "leveling", "discord", "levels", "buape"],
-	"trustedDependencies": ["@biomejs/biome"]
+	"keywords": [
+		"kiai",
+		"api",
+		"leveling",
+		"discord",
+		"levels",
+		"buape"
+	],
+	"trustedDependencies": [
+		"@biomejs/biome"
+	]
 }
