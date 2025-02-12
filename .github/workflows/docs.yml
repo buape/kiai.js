@@ -1,0 +1,42 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kiai.js
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Generate Documentation
+        run: bun run typedoc
+
+      - name: Checkout kiai-docs
+        uses: actions/checkout@v4
+        with:
+          repository: buape/kiai-docs
+          token: ${{ secrets.BUAPEBOT_SECRET }}
+          path: kiai-docs
+
+      - name: Copy Documentation
+        run: |
+          rm -rf kiai-docs/content/kiai.js
+          mkdir -p kiai-docs/content/kiai.js
+          cp -r docs/* kiai-docs/content/kiai.js/
+
+      - name: Commit and Push
+        run: |
+          cd kiai-docs
+          git config user.name "BuapeBot"
+          git config user.email "buapestudios@gmail.com"
+          git add .
+          git commit -m "docs: update kiai.js documentation from kiai.js@${{ github.sha }}"
+          git push 

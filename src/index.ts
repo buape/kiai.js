@@ -1,4 +1,6 @@
 import { KiaiClient } from "./KiaiClient"
-export { KiaiClient }
+import { RequestHandler } from "./RequestHandler"
+export { KiaiClient, RequestHandler }
 
 export * from "./types"
+export * from "./handlers"

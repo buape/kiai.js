@@ -1,4 +1,4 @@
-import { BaseHandler } from "."
+import { BaseHandler } from "./BaseHandler"
 import type { Leaderboard, LevelData, SuccessResponse } from "../types"
 
 export class Leveling extends BaseHandler {

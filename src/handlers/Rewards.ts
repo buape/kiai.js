@@ -1,4 +1,4 @@
-import { BaseHandler } from "."
+import { BaseHandler } from "./BaseHandler"
 import type { CountResponse, Reward, SuccessResponse } from "../types"
 
 export class Rewards extends BaseHandler {

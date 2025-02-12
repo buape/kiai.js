@@ -1,13 +1,15 @@
-import { BaseHandler } from "."
-import type { CountResponse, Denylist, DenylistEntry } from "../types"
+import { BaseHandler } from "./BaseHandler"
+import type { CountResponse, Denylists, DenylistEntry } from "../types"
 
-export class DenylistHandler extends BaseHandler {
+export class Denylist extends BaseHandler {
 	/**
 	 * Get all denylists for a guild
 	 * @param guildId The guild ID to get denylists for
 	 */
 	async getDenylists(guildId: string) {
-		const result = await this._handler.request<Denylist>(`/${guildId}/denylist`)
+		const result = await this._handler.request<Denylists>(
+			`/${guildId}/denylist`
+		)
 		return result
 	}
 

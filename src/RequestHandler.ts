@@ -2,6 +2,11 @@ import { APIError } from "./errors/APIError"
 import { RatelimitError } from "./errors/RatelimitError"
 import type { ErrorResponse, RatelimitErrorResponse } from "./types"
 
+/**
+ * This class is used to make requests to the Kiai API, and handles rate limiting and error handling.
+ * You can technically use this class directly, but it's recommended to use the client instead.
+ * @internal
+ */
 export class RequestHandler {
 	baseURL: string
 	apiKey: string
