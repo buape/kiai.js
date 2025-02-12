@@ -1,17 +1,13 @@
-import type {
-	MeResponse,
-	RootResponse,
-	SuccessResponse,
-	VirtualMessage
-} from "./types"
-import type { LeaderboardRoles } from "./handlers/LeaderboardRoles"
-import type { Leveling } from "./handlers/Leveling"
-import type { DenylistHandler } from "./handlers/Denylist"
-import type { Settings } from "./handlers/Settings"
-import type { Multipliers } from "./handlers/Multipliers"
-import type { Rewards } from "./handlers/Rewards"
 import { RequestHandler } from "./RequestHandler"
 import * as handlers from "./handlers"
+import type { DenylistHandler } from "./handlers/Denylist"
+import type { LeaderboardRoles } from "./handlers/LeaderboardRoles"
+import type { Leveling } from "./handlers/Leveling"
+import type { Misc } from "./handlers/Misc"
+import type { Multipliers } from "./handlers/Multipliers"
+import type { Rewards } from "./handlers/Rewards"
+import type { Settings } from "./handlers/Settings"
+import type { RootResponse } from "./types"
 
 export class KiaiClient {
 	readonly apiKey: string
@@ -26,6 +22,7 @@ export class KiaiClient {
 	readonly rewards: Rewards
 	readonly settings: Settings
 	readonly leaderboardRoles: LeaderboardRoles
+	readonly misc: Misc
 
 	/**
 	 * Create a new KiaiClient
@@ -64,13 +61,14 @@ export class KiaiClient {
 		this.rewards = new handlers.Rewards(this._requestHandler)
 		this.settings = new handlers.Settings(this._requestHandler)
 		this.leaderboardRoles = new handlers.LeaderboardRoles(this._requestHandler)
+		this.misc = new handlers.Misc(this._requestHandler)
 	}
 
 	/**
 	 * Get information about the API
 	 */
 	public async getRoot() {
-		const result = await this._requestHandler.request<RootResponse>(
+		return await this._requestHandler.request<RootResponse>(
 			"/",
 			"GET",
 			{},
@@ -78,29 +76,5 @@ export class KiaiClient {
 			true,
 			"https://api.kiai.app"
 		)
-		return result
-	}
-
-	/**
-	 * Get information about the current application
-	 */
-	public async getMe() {
-		const result = await this._requestHandler.request<MeResponse>("/me", "GET")
-		return result
-	}
-
-	/**
-	 * Create a virtual message
-	 * @param guildId The guild ID to create the message in
-	 * @param message The message to create
-	 */
-	public async createVirtualMessage(message: VirtualMessage) {
-		const result = await this._requestHandler.request<SuccessResponse>(
-			`/virtual_message`,
-			"POST",
-			{},
-			message
-		)
-		return result
 	}
 }

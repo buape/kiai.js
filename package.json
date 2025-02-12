@@ -1,56 +1,60 @@
 {
-  "name": "kiai.js",
-  "description": "The official JS/TS API library for Kiai",
-  "type": "module",
-  "version": "3.0.0",
-  "author": {
-    "name": "Shadow",
-    "email": "shadow@buape.com"
-  },
-  "scripts": {
-    "build": "bun run build.ts",
-    "clean": "rimraf dist",
-    "prepublishOnly": "bun run build"
-  },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/buape/kiai.js.git"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/buape/kiai.js/issues"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@types/bun": "1.2.2",
-    "bun-plugin-dts": "0.3.0"
-  },
-  "files": [
-    "dist",
-    "LICENSE"
-  ],
-  "engines": {
-    "node": ">=18.19.0"
-  },
-  "keywords": [
-    "kiai",
-    "api",
-    "leveling",
-    "discord",
-    "levels",
-    "buape"
-  ],
-  "trustedDependencies": [
-    "@biomejs/biome"
-  ]
+	"name": "kiai.js",
+	"description": "The official JS/TS API library for Kiai",
+	"type": "module",
+	"version": "3.0.0",
+	"author": {
+		"name": "Shadow",
+		"email": "shadow@buape.com"
+	},
+	"scripts": {
+		"build": "bun run build.ts",
+		"lint": "biome check --write .",
+		"publish": "bun run build && changeset version && changeset publish --no-git-tag",
+		"publish:snapshot": "bun run build && changeset version --snapshot beta && changeset publish --tag beta --no-git-tag",
+		"test": "bun test",
+		"typecheck": "tsc --noEmit"
+	},
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/buape/kiai.js.git"
+	},
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/buape/kiai.js/issues"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@changesets/cli": "^2.27.12",
+		"@types/bun": "1.2.2",
+		"bun-plugin-dts": "0.3.0"
+	},
+	"files": [
+		"dist",
+		"LICENSE"
+	],
+	"engines": {
+		"node": ">=20.18.1"
+	},
+	"keywords": [
+		"kiai",
+		"api",
+		"leveling",
+		"discord",
+		"levels",
+		"buape"
+	],
+	"trustedDependencies": [
+		"@biomejs/biome"
+	]
 }

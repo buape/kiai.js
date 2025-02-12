@@ -15,6 +15,7 @@ export class APIError extends Error {
 	constructor(status: number, data: ErrorResponse) {
 		super()
 		this.name = this.constructor.name
+		Error.captureStackTrace(this, this.constructor)
 		this.error = data.error
 		this.code = data.code || status
 		this.message = data.message

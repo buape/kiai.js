@@ -12,7 +12,7 @@ export const getClient = () => {
 
 export const verifyClient = async () => {
 	const client = getClient()
-	const me = await client.getMe()
+	const me = await client.misc.getSelf()
 
 	expect(me.id).toBe(ids.applicationId)
 	return client

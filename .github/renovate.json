@@ -4,7 +4,6 @@
 		":dependencyDashboard",
 		":ignoreModulesAndTests",
 		":semanticPrefixFixDepsChoreOthers",
-		"group:monorepos",
 		"group:recommended",
 		"replacements:all",
 		"workarounds:all",
@@ -16,18 +15,23 @@
 	"automergeType": "pr",
 	"automergeStrategy": "squash",
 	"platformAutomerge": true,
-	"ignorePaths": ["**/archive/**"],
 	"packageRules": [
 		{
-			"matchUpdateTypes": ["patch"],
+			"matchUpdateTypes": [
+				"patch"
+			],
 			"groupName": "patch"
 		},
 		{
-			"matchUpdateTypes": ["minor"],
+			"matchUpdateTypes": [
+				"minor"
+			],
 			"groupName": "minor"
 		},
 		{
-			"matchDepTypes": ["devDependencies"],
+			"matchDepTypes": [
+				"devDependencies"
+			],
 			"groupName": "devDependencies"
 		}
 	]

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { verifyClient, ids } from "./_setup"
+import { ids, verifyClient } from "./_setup"
 
 describe("Leveling", () => {
 	test("XP operations", async () => {

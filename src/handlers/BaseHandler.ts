@@ -1,4 +1,4 @@
-import { RequestHandler } from "../RequestHandler"
+import type { RequestHandler } from "../RequestHandler"
 
 export class BaseHandler {
 	public _handler: RequestHandler

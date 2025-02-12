@@ -1,0 +1,14 @@
+name: Setup Repository
+description: Sets up Bun, installs dependencies, and configures the environment
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+
+    - name: Install dependencies
+      shell: bash
+      run: bun install --frozen-lockfile

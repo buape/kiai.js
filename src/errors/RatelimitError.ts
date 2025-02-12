@@ -21,6 +21,7 @@ export class RatelimitError extends Error {
 	) {
 		super()
 		this.name = this.constructor.name
+		Error.captureStackTrace(this, this.constructor)
 		this.status = status
 		this.resetAfter = resetAfter
 		this.message =
@@ -30,9 +31,9 @@ export class RatelimitError extends Error {
 }
 
 function formatTime(seconds: number): string {
-	if (seconds < 60) return `${seconds} second${seconds === 1 ? "" : "s"}`
+	if (seconds < 60) return `${seconds} second${seconds !== 1 && "s"}`
 	const minutes = Math.floor(seconds / 60)
-	if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"}`
+	if (minutes < 60) return `${minutes} minute${minutes !== 1 && "s"}`
 	const hours = Math.floor(minutes / 60)
-	return `${hours} hour${hours === 1 ? "" : "s"}`
+	return `${hours} hour${hours !== 1 && "s"}`
 }
