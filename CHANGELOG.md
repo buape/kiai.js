@@ -1,6 +1,12 @@
 # kiai.js
 
+## 3.0.0
 
+### Major Changes
+
+- 9ddea48: feat: Kiai API v2
+
+  This release supports the new v2 of Kiai's API, which has several breaking changes from v1.
 
 ## 2.2.0
 
