@@ -34,13 +34,12 @@ export class RequestHandler {
 	async request<T>(
 		endpoint: string,
 		method: "GET" | "POST" | "PATCH" | "PUT" | "DELETE" = "GET",
-		query = {},
-		// biome-ignore lint/suspicious/noExplicitAny: This can truly be any
-		body: { [key: string]: any } = {},
+		query: Record<string, string | number | boolean> = {},
+		body: Record<string, unknown> = {},
 		noError = false,
 		customBaseUrl?: string
 	): Promise<T> {
-		const url = `${customBaseUrl ?? this.baseURL}${endpoint}${new URLSearchParams(query).toString()}`
+		const url = `${customBaseUrl ?? this.baseURL}${endpoint}${searchParams(query)}`
 		const options = {
 			method,
 			headers: {
@@ -108,4 +107,12 @@ export class RequestHandler {
 		if (this.debug) console.debug("API Error: \n", res, errorData)
 		throw new APIError(res.status, errorData)
 	}
+}
+
+const searchParams = (query: Record<string, string | number | boolean>) => {
+	const params = new URLSearchParams()
+	for (const [key, value] of Object.entries(query)) {
+		params.set(key, String(value))
+	}
+	return params
 }

@@ -1,5 +1,5 @@
-import { BaseHandler } from "./BaseHandler"
 import type { CountResponse, Reward, SuccessResponse } from "../types"
+import { BaseHandler } from "./BaseHandler"
 
 export class Rewards extends BaseHandler {
 	async getRewards(guildId: string) {

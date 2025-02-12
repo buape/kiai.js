@@ -1,5 +1,5 @@
-import { BaseHandler } from "./BaseHandler"
 import type { Leaderboard, LevelData, SuccessResponse } from "../types"
+import { BaseHandler } from "./BaseHandler"
 
 export class Leveling extends BaseHandler {
 	async getLeaderboard(

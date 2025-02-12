@@ -10,9 +10,7 @@
 		"./typedoc-formatter.mjs"
 	],
 	"basePath": "src/",
-	"entryPoints": [
-		"src/index.ts"
-	],
+	"entryPoints": ["src/index.ts"],
 	"disableSources": true,
 	"readme": "none",
 	"hidePageHeader": true,

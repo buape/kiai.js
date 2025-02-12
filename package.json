@@ -44,22 +44,10 @@
 		"typedoc-plugin-markdown": "4.4.2",
 		"typedoc-plugin-mdn-links": "4.0.12"
 	},
-	"files": [
-		"dist",
-		"LICENSE"
-	],
+	"files": ["dist", "LICENSE"],
 	"engines": {
 		"node": ">=20.18.1"
 	},
-	"keywords": [
-		"kiai",
-		"api",
-		"leveling",
-		"discord",
-		"levels",
-		"buape"
-	],
-	"trustedDependencies": [
-		"@biomejs/biome"
-	]
+	"keywords": ["kiai", "api", "leveling", "discord", "levels", "buape"],
+	"trustedDependencies": ["@biomejs/biome"]
 }

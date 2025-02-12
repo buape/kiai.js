@@ -17,21 +17,15 @@
 	"platformAutomerge": true,
 	"packageRules": [
 		{
-			"matchUpdateTypes": [
-				"patch"
-			],
+			"matchUpdateTypes": ["patch"],
 			"groupName": "patch"
 		},
 		{
-			"matchUpdateTypes": [
-				"minor"
-			],
+			"matchUpdateTypes": ["minor"],
 			"groupName": "minor"
 		},
 		{
-			"matchDepTypes": [
-				"devDependencies"
-			],
+			"matchDepTypes": ["devDependencies"],
 			"groupName": "devDependencies"
 		}
 	]

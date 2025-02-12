@@ -1,5 +1,5 @@
-import { BaseHandler } from "./BaseHandler"
 import type { LeaderboardRole, SuccessResponse } from "../types"
+import { BaseHandler } from "./BaseHandler"
 
 export class LeaderboardRoles extends BaseHandler {
 	/**

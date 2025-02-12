@@ -1,4 +1,4 @@
-import { describe, expect, test, afterAll } from "bun:test"
+import { afterAll, describe, expect, test } from "bun:test"
 import { ids, verifyClient } from "./_setup"
 
 describe("LeaderboardRoles", () => {

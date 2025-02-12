@@ -1,5 +1,5 @@
-import { BaseHandler } from "./BaseHandler"
 import type { GuildSettings } from "../types"
+import { BaseHandler } from "./BaseHandler"
 
 export class Settings extends BaseHandler {
 	async getSettings(guildId: string) {
