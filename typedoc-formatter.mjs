@@ -41,7 +41,7 @@ export function load(app) {
 				(_, text, link) => {
 					let newLink = link
 					if (!link.includes("://")) {
-						const url = new URL(link, `http://e.com/api/${dir}`)
+						const url = new URL(link, `http://e.com/docs/${dir}`)
 						newLink = `${url.pathname}${url.search}${url.hash}`
 						if (link.endsWith("/index")) {
 							newLink = link.slice(0, -6)
