@@ -1,4 +1,5 @@
-import { APIError, RatelimitError } from "."
+import { APIError } from "./errors/APIError"
+import { RatelimitError } from "./errors/RatelimitError"
 import type { ErrorResponse, RatelimitErrorResponse } from "./types"
 
 export class RequestHandler {
