@@ -27,6 +27,7 @@ jobs:
           repository: buape/kiai-docs
           token: ${{ secrets.BUAPEBOT_SECRET }}
           path: kiai-docs
+          ref: v2
 
       - name: Copy Documentation
         run: |
