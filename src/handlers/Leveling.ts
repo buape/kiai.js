@@ -4,8 +4,8 @@ import { BaseHandler } from "./BaseHandler"
 export class Leveling extends BaseHandler {
 	async getLeaderboard(
 		guildId: string,
-		start: number | undefined,
-		end: number | undefined
+		start?: number,
+		end?: number
 	) {
 		if (start !== undefined && start < 0) {
 			throw new Error("Start parameter must be non-negative")
