@@ -222,6 +222,10 @@ export type VirtualMessage = {
 	guild: {
 		id: string
 	}
+	message: {
+		id: string
+		content?: string
+	}
 }
 
 /**

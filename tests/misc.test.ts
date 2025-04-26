@@ -30,6 +30,10 @@ describe("Misc", () => {
 				},
 				guild: {
 					id: ids.server
+				},
+				message: {
+					id: "1",
+					content: "Hello, world!"
 				}
 			}
 
