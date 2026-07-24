@@ -57,7 +57,7 @@ export class KiaiClient {
 	) {
 		this.apiKey = apiKey
 		this.version = options?.version || "v2"
-		this.baseURL = options?.baseURL || `https://api.kiai.app/${this.version}`
+		this.baseURL = options?.baseURL || `https://www.kiai.app/api/${this.version}`
 		this.debug = options?.debug || false
 		this._requestHandler = new RequestHandler(
 			this.baseURL,
@@ -85,7 +85,6 @@ export class KiaiClient {
 			{},
 			undefined,
 			true,
-			"https://api.kiai.app"
 		)
 	}
 }
