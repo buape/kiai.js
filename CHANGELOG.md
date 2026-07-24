@@ -1,5 +1,11 @@
 # kiai.js
 
+## 3.1.0
+
+### Minor Changes
+
+- dc41a71: fix: update the base url to our new location
+
 ## 3.0.1
 
 ### Patch Changes
