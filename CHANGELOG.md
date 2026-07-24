@@ -1,5 +1,12 @@
 # kiai.js
 
+## 3.0.1
+
+### Patch Changes
+
+- efbd3f1: fix: make leaderboard params optional instead of requiring undefined
+- 50f2529: feat: message id and content for virtual messages
+
 ## 3.0.0
 
 ### Major Changes
