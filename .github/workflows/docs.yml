@@ -36,7 +36,7 @@ jobs:
           rm -rf kiai-docs/content/kiai.js
           mkdir -p kiai-docs/content/kiai.js
           cp -r docs/* kiai-docs/content/kiai.js/
-          printf '{\n  "defaultOpen": false\n}\n' > kiai-docs/content/kiai.js/meta.json
+          printf '{\n\t"defaultOpen": false\n}\n' > kiai-docs/content/kiai.js/meta.json
 
       - name: Create documentation PR
         env:
@@ -54,9 +54,9 @@ jobs:
           git commit -m "docs: update kiai.js documentation from kiai.js@${{ github.sha }}"
           git push --force origin automation/kiai-js-docs
 
-          pr=$(gh pr list --repo buape/kiai-docs --head automation/kiai-js-docs --base v2 --json number --jq '.[0].number')
+          pr=$(gh api repos/buape/kiai-docs/pulls --method GET -f state=open -f head=buape:automation/kiai-js-docs -f base=v2 --jq '.[0].number // ""')
           if [ -n "$pr" ]; then
-            gh pr edit "$pr" --repo buape/kiai-docs --title "docs: update kiai.js documentation" --body "Automated documentation update from kiai.js@${{ github.sha }}."
+            gh api "repos/buape/kiai-docs/pulls/$pr" --method PATCH -f title="docs: update kiai.js documentation" -f body="Automated documentation update from kiai.js@${{ github.sha }}."
           else
-            gh pr create --repo buape/kiai-docs --base v2 --head automation/kiai-js-docs --title "docs: update kiai.js documentation" --body "Automated documentation update from kiai.js@${{ github.sha }}."
+            gh api repos/buape/kiai-docs/pulls --method POST -f title="docs: update kiai.js documentation" -f head=buape:automation/kiai-js-docs -f base=v2 -f body="Automated documentation update from kiai.js@${{ github.sha }}."
           fi
