@@ -24,7 +24,7 @@ jobs:
         id: changesets
         uses: changesets/action@v2.1.2
         with:
-          publish-script: bun run build && bun x changeset publish --no-git-tag
+          publish-script: bun run publish
           pr-title: "Pending Releases"
           commit-message: "chore: update changelog and release"
           github-token: ${{ secrets.BUAPEBOT_SECRET }}
