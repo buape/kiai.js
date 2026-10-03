@@ -36,6 +36,7 @@ jobs:
           rm -rf kiai-docs/content/kiai.js
           mkdir -p kiai-docs/content/kiai.js
           cp -r docs/* kiai-docs/content/kiai.js/
+          printf '{\n  "defaultOpen": false\n}\n' > kiai-docs/content/kiai.js/meta.json
 
       - name: Create documentation PR
         env:
