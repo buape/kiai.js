@@ -1,1 +1,5 @@
 * @thewilloftheshadow
+CODEOWNERS @buape/core
+package.json @thewilloftheshadow @kevinatbuape
+bun.lock @thewilloftheshadow @kevinatbuape
+.github/** @thewilloftheshadow @kevinatbuape
