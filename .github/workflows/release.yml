@@ -20,6 +20,12 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+
       - name: Process Changesets
         id: changesets
         uses: changesets/action@v2.1.2
