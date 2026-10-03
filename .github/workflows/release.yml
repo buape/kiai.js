@@ -12,10 +12,14 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     permissions:
+      contents: write
+      pull-requests: write
       id-token: write
     steps:
       - name: Check out code
         uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.BUAPEBOT_SECRET }}
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -24,6 +28,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
+          registry-url: https://registry.npmjs.org
           package-manager-cache: false
 
       - name: Process Changesets
