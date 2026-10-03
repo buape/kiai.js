@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'src/**'
-      - 'typedoc.json'
-      - 'typedoc-formatter.mjs'
+      - "src/**"
+      - "typedoc.json"
+      - "typedoc-formatter.mjs"
   workflow_dispatch:
 
 jobs:
@@ -44,4 +44,4 @@ jobs:
           git config user.email "buapestudios@gmail.com"
           git add .
           git commit -m "docs: update kiai.js documentation from kiai.js@${{ github.sha }}"
-          git push 
+          git push
