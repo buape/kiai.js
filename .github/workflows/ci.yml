@@ -36,5 +36,8 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      - name: Run Biome
-        run: bunx @biomejs/biome ci .
+      - name: Check formatting
+        run: bun x oxfmt --check .
+
+      - name: Run Oxlint
+        run: bun x oxlint
