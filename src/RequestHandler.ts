@@ -39,7 +39,8 @@ export class RequestHandler {
 		noError = false,
 		customBaseUrl?: string
 	): Promise<T> {
-		const url = `${customBaseUrl ?? this.baseURL}${endpoint}${searchParams(query)}`
+		const queryString = searchParams(query)
+		const url = `${customBaseUrl ?? this.baseURL}${endpoint}${queryString ? `?${queryString}` : ""}`
 		const options = {
 			method,
 			headers: {
@@ -76,8 +77,15 @@ export class RequestHandler {
 		}
 
 		let errorData: ErrorResponse
+		let bodyResetAfter: number | undefined
 		try {
-			const parsed = (await res.json()) as Partial<ErrorResponse>
+			const parsed = (await res.json()) as Partial<
+				ErrorResponse & { resetAfter: number | string }
+			>
+			const parsedResetAfter = Number(parsed.resetAfter)
+			bodyResetAfter = Number.isFinite(parsedResetAfter)
+				? parsedResetAfter
+				: undefined
 			errorData = {
 				error: typeof parsed.error === "string" ? parsed.error : res.statusText,
 				code: typeof parsed.code === "number" ? parsed.code : res.status,
@@ -94,9 +102,9 @@ export class RequestHandler {
 
 		if (res.status === 429) {
 			if (noError) return errorData as T
-			const resetAfter = Number.parseInt(
-				res.headers.get("x-ratelimit-reset-after") ?? "0"
-			)
+			const resetAfter =
+				bodyResetAfter ??
+				Number(res.headers.get("x-ratelimit-reset-after") ?? 0)
 			const ratelimitData: RatelimitErrorResponse = {
 				...errorData,
 				resetAfter
@@ -114,5 +122,5 @@ const searchParams = (query: Record<string, string | number | boolean>) => {
 	for (const [key, value] of Object.entries(query)) {
 		params.set(key, String(value))
 	}
-	return params
+	return params.toString()
 }

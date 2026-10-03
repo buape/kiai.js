@@ -1,5 +1,4 @@
 import { describe, expect, test } from "bun:test"
-import { ApiPermission } from "../src"
 import { ids, verifyClient } from "./_setup"
 
 describe("Settings", () => {
@@ -10,7 +9,6 @@ describe("Settings", () => {
 			const settings = await client.settings.getSettings(ids.server)
 			expect(settings).toBeDefined()
 			expect(settings.id).toBeString()
-			expect(settings.name).toBeString()
 			expect(
 				settings.levelUpChannel === null ||
 					typeof settings.levelUpChannel === "string"
@@ -18,7 +16,6 @@ describe("Settings", () => {
 			expect(settings.sendLevelUpMessages).toBeBoolean()
 			expect(settings.autoDeleteLevelUpMessages).toBeBoolean()
 			expect(settings.messageXpEnabled).toBeBoolean()
-			expect(settings.globalMulti).toBeInteger()
 			expect(settings.minXp).toBeInteger()
 			expect(settings.maxXp).toBeInteger()
 			expect(
@@ -48,15 +45,11 @@ describe("Settings", () => {
 			expect(settings.xpDropClaimAction).toBeString()
 			expect(settings.xpDropXpMin).toBeInteger()
 			expect(settings.xpDropXpMax).toBeInteger()
-			expect(settings.xpDropMessage).toBeString()
+			expect(settings.xpDropMessageKitData).toBeDefined()
 			expect(settings.xpDropAmount).toBeInteger()
-			expect(settings.xpDropTimeBetweenDrops).toBeInteger()
+			expect(settings.xpDropTimeBetweenDropsMin).toBeInteger()
+			expect(settings.xpDropTimeBetweenDropsMax).toBeInteger()
 			expect(settings.xpDropExpiresAfter).toBeInteger()
-			expect(settings.xpDropCount).toBeInteger()
-			expect(
-				settings.xpDropLastDrop === null ||
-					settings.xpDropLastDrop instanceof Date
-			).toBeTrue()
 			expect(
 				settings.rankCardBackground === null ||
 					typeof settings.rankCardBackground === "string"
@@ -72,10 +65,6 @@ describe("Settings", () => {
 			expect(settings.weeklyLeaderboardsEnabled).toBeBoolean()
 			expect(settings.monthlyLeaderboardsEnabled).toBeBoolean()
 			expect(settings.weekStartsOnMonday).toBeBoolean()
-			expect(
-				settings.leaderboardVanity === null ||
-					typeof settings.leaderboardVanity === "string"
-			).toBeTrue()
 			expect(settings.xpFormula).toBeString()
 			expect(settings.voiceXpEnabled).toBeBoolean()
 			expect(settings.voiceXpPerMinute).toBeInteger()

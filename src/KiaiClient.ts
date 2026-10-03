@@ -1,7 +1,10 @@
 import { RequestHandler } from "./RequestHandler"
 import {
+	AutoLeaderboards,
+	Cooldowns,
 	Denylist,
 	LeaderboardRoles,
+	LevelUpMessages,
 	Leveling,
 	Misc,
 	Multipliers,
@@ -17,8 +20,11 @@ export class KiaiClient {
 	readonly debug: boolean
 	readonly _requestHandler: RequestHandler
 
+	readonly autoLeaderboards: AutoLeaderboards
+	readonly cooldowns: Cooldowns
 	readonly denylist: Denylist
 	readonly leveling: Leveling
+	readonly levelUpMessages: LevelUpMessages
 	readonly multipliers: Multipliers
 	readonly rewards: Rewards
 	readonly settings: Settings
@@ -56,8 +62,9 @@ export class KiaiClient {
 		}
 	) {
 		this.apiKey = apiKey
-		this.version = options?.version || "v2"
-		this.baseURL = options?.baseURL || `https://www.kiai.app/api/${this.version}`
+		this.version = options?.version || "v3"
+		this.baseURL =
+			options?.baseURL || `https://www.kiai.app/api/${this.version}`
 		this.debug = options?.debug || false
 		this._requestHandler = new RequestHandler(
 			this.baseURL,
@@ -66,8 +73,11 @@ export class KiaiClient {
 			options?.fetchFunction ?? fetch
 		)
 
+		this.autoLeaderboards = new AutoLeaderboards(this._requestHandler)
+		this.cooldowns = new Cooldowns(this._requestHandler)
 		this.denylist = new Denylist(this._requestHandler)
 		this.leveling = new Leveling(this._requestHandler)
+		this.levelUpMessages = new LevelUpMessages(this._requestHandler)
 		this.multipliers = new Multipliers(this._requestHandler)
 		this.rewards = new Rewards(this._requestHandler)
 		this.settings = new Settings(this._requestHandler)
@@ -84,7 +94,7 @@ export class KiaiClient {
 			"GET",
 			{},
 			undefined,
-			true,
+			true
 		)
 	}
 }

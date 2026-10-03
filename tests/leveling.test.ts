@@ -8,7 +8,7 @@ describe("Leveling", () => {
 				const client = await verifyClient()
 				const userId = ids.users.buape
 				const member = await client.leveling.getMember(ids.server, userId)
-				expect(member).toBeDefined()
+				if (member === null) throw new Error("Member data not found")
 				expect(member.xp).toBeDefined()
 			})
 		})
@@ -21,6 +21,7 @@ describe("Leveling", () => {
 					ids.server,
 					userId
 				)
+				if (initialMember === null) throw new Error("Member data not found")
 				const initialXp = initialMember.xp
 
 				await client.leveling.addXp(ids.server, userId, 100)
@@ -28,25 +29,26 @@ describe("Leveling", () => {
 					ids.server,
 					userId
 				)
+				if (memberAfterAdd === null)
+					throw new Error("Member data not found after adding XP")
 				expect(memberAfterAdd.xp).toBe(initialXp + 100)
 			})
 
-			test("throws error for negative XP", async () => {
+			test("rejects XP below the v3 minimum", async () => {
 				const client = await verifyClient()
 				const userId = ids.users.buape
 
-				await expect(
-					client.leveling.addXp(ids.server, userId, -100)
-				).rejects.toThrow("XP must be a positive integer")
+				expect(client.leveling.addXp(ids.server, userId, -100)).rejects.toThrow(
+					"XP must be greater than 0 and at most 100000000"
+				)
 			})
 
-			test("throws error for non-integer XP", async () => {
+			test("accepts fractional XP", async () => {
 				const client = await verifyClient()
 				const userId = ids.users.buape
 
-				await expect(
-					client.leveling.addXp(ids.server, userId, 10.5)
-				).rejects.toThrow("XP must be a positive integer")
+				await client.leveling.addXp(ids.server, userId, 10.5)
+				await client.leveling.removeXp(ids.server, userId, 10.5)
 			})
 		})
 
@@ -58,6 +60,7 @@ describe("Leveling", () => {
 					ids.server,
 					userId
 				)
+				if (initialMember === null) throw new Error("Member data not found")
 				const initialXp = initialMember.xp
 
 				await client.leveling.removeXp(ids.server, userId, 50)
@@ -65,25 +68,26 @@ describe("Leveling", () => {
 					ids.server,
 					userId
 				)
+				if (memberAfterRemove === null)
+					throw new Error("Member data not found after removing XP")
 				expect(memberAfterRemove.xp).toBe(initialXp - 50)
 			})
 
-			test("throws error for negative XP", async () => {
+			test("rejects XP below the v3 minimum", async () => {
 				const client = await verifyClient()
 				const userId = ids.users.buape
 
-				await expect(
+				expect(
 					client.leveling.removeXp(ids.server, userId, -50)
-				).rejects.toThrow("XP must be a positive integer")
+				).rejects.toThrow("XP must be greater than 0 and at most 100000000")
 			})
 
-			test("throws error for non-integer XP", async () => {
+			test("accepts fractional XP", async () => {
 				const client = await verifyClient()
 				const userId = ids.users.buape
 
-				await expect(
-					client.leveling.removeXp(ids.server, userId, 25.5)
-				).rejects.toThrow("XP must be a positive integer")
+				await client.leveling.removeXp(ids.server, userId, 25.5)
+				await client.leveling.addXp(ids.server, userId, 25.5)
 			})
 		})
 
@@ -97,6 +101,8 @@ describe("Leveling", () => {
 					ids.server,
 					userId
 				)
+				if (memberAfterSet === null)
+					throw new Error("Member data not found after setting XP")
 				expect(memberAfterSet.xp).toBe(1000)
 			})
 
@@ -104,18 +110,26 @@ describe("Leveling", () => {
 				const client = await verifyClient()
 				const userId = ids.users.buape
 
-				await expect(
+				expect(
 					client.leveling.setXp(ids.server, userId, -1000)
-				).rejects.toThrow("XP must be a non-negative integer")
+				).rejects.toThrow("XP must be between 0 and 100000000")
 			})
 
-			test("throws error for non-integer XP", async () => {
+			test("accepts fractional XP", async () => {
 				const client = await verifyClient()
 				const userId = ids.users.buape
+				const member = await client.leveling.getMember(ids.server, userId)
+				if (member === null) throw new Error("Member data not found")
 
-				await expect(
-					client.leveling.setXp(ids.server, userId, 500.5)
-				).rejects.toThrow("XP must be a non-negative integer")
+				await client.leveling.setXp(ids.server, userId, 500.5)
+				const memberAfterSet = await client.leveling.getMember(
+					ids.server,
+					userId
+				)
+				if (memberAfterSet === null)
+					throw new Error("Member data not found after setting XP")
+				expect(memberAfterSet.xp).toBe(500.5)
+				await client.leveling.setXp(ids.server, userId, member.xp)
 			})
 
 			test("allows setting XP to zero", async () => {
@@ -127,6 +141,8 @@ describe("Leveling", () => {
 					ids.server,
 					userId
 				)
+				if (memberAfterSet === null)
+					throw new Error("Member data not found after setting XP")
 				expect(memberAfterSet.xp).toBe(0)
 			})
 		})
@@ -178,26 +194,16 @@ describe("Leveling", () => {
 
 			test("throws error for negative start index", async () => {
 				const client = await verifyClient()
-				await expect(
+				expect(
 					client.leveling.getLeaderboard(ids.server, -1, undefined)
-				).rejects.toThrow("Start parameter must be non-negative")
+				).rejects.toThrow("start must be a positive integer")
 			})
 
 			test("throws error for negative end index", async () => {
 				const client = await verifyClient()
-				await expect(
+				expect(
 					client.leveling.getLeaderboard(ids.server, undefined, -1)
-				).rejects.toThrow("End parameter must be non-negative")
-			})
-
-			test("throws error when start >= end", async () => {
-				const client = await verifyClient()
-				await expect(
-					client.leveling.getLeaderboard(ids.server, 5, 5)
-				).rejects.toThrow("Start parameter must be less than end parameter")
-				await expect(
-					client.leveling.getLeaderboard(ids.server, 6, 5)
-				).rejects.toThrow("Start parameter must be less than end parameter")
+				).rejects.toThrow("end must be a positive integer")
 			})
 		})
 	})

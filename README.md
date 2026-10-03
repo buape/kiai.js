@@ -29,14 +29,10 @@ bun add kiai.js
 ```typescript
 import { KiaiClient } from 'kiai.js';
 
-// Initialize the client
-const kiai = new KiaiClient({
-    apiKey: 'your-api-key'
-});
+const kiai = new KiaiClient('your-api-key'); // API v3 by default
 
-// Example: Get user level
-const userLevel = await kiai.leveling.getUserLevel('guild_id', 'user_id');
-console.log(`User level: ${userLevel}`);
+const member = await kiai.leveling.getMember('guild_id', 'user_id');
+console.log(`User XP: ${member?.xp ?? 0}`);
 ```
 
 ## Documentation
@@ -45,42 +41,47 @@ For detailed documentation, visit our [documentation site](https://kiai.app/docs
 
 ## Handlers
 
-kiai.js provides several handlers to interact with different aspects of the API. These handlers mirror the API categories on our [API docs](https://api.kiai.app/v2/docs).
+kiai.js provides several handlers to interact with different aspects of the API. These handlers mirror the API categories on our [API v3 docs](https://www.kiai.app/api/v3/docs/json).
 
-- `Leveling` - Manage user levels and XP
-- `Rewards` - Configure and manage level rewards
-- `LeaderboardRoles` - Handle leaderboard-based role assignments
-- `Settings` - Manage guild settings
-- `Multipliers` - Configure XP multipliers
-- `Denylist` - Manage denied channels and roles
-- `Misc` - Miscellaneous API interactions
+- `Leveling` - Levels, XP, prestige, leaderboards, and server stats
+- `Rewards` - Declarative rewards, capabilities, and reconciliation jobs
+- `LeaderboardRoles` and `AutoLeaderboards` - Leaderboard role and message management
+- `LevelUpMessages` - Read configured level-up messages
+- `Settings` - Read guild settings
+- `Multipliers` and `Cooldowns` - XP multipliers and cooldown overrides
+- `Denylist` - Manage denied channels, roles, and users
+- `Misc` - Application, guild status, export, feature preview, and XP drop endpoints
 
 ## Examples
 
 ### Working with Levels
 
 ```typescript
-// Get user XP
-const xp = await kiai.leveling.getUserXp('guild_id', 'user_id');
-
-// Add XP to user
+// Add XP to a user
 await kiai.leveling.addXp('guild_id', 'user_id', 100);
 
-// Get guild leaderboard
-const leaderboard = await kiai.leveling.getLeaderboard('guild_id');
+// Query a leaderboard by category and period
+const leaderboard = await kiai.leveling.getLeaderboard('guild_id', {
+    type: 'xp',
+    time: 'WEEK',
+    start: 1,
+    end: 10
+});
 ```
 
 ### Managing Rewards
 
 ```typescript
-// Add a level reward
-await kiai.rewards.createReward('guild_id', {
-    level: 10,
-    roleId: 'role_id'
+// Create a role reward
+const reward = await kiai.rewards.createReward('guild_id', {
+    type: 'ROLE',
+    threshold: { level: 10, prestige: null },
+    eligibility: { requiredRoleId: null },
+    config: { roleId: 'role_id', operation: 'ADD', durationMs: null }
 });
 
-// Get all rewards
-const rewards = await kiai.rewards.getRewards('guild_id');
+// List rewards (or filter by type, level, and prestige)
+const rewards = await kiai.rewards.getRewards('guild_id', { type: 'ROLE' });
 ```
 
 ## License

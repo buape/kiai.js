@@ -37,4 +37,4 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Run Biome
-        run: bunx @biomejs/biome ci . 
+        run: bunx @biomejs/biome ci .

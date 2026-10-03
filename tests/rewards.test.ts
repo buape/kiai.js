@@ -2,6 +2,18 @@ import { afterAll, beforeEach, describe, expect, test } from "bun:test"
 import type { RoleReward } from "../src"
 import { ids, verifyClient } from "./_setup"
 
+const roleReward = (
+	level: number,
+	roleId: string,
+	operation: "ADD" | "REMOVE"
+) =>
+	({
+		threshold: { level, prestige: null },
+		eligibility: { requiredRoleId: null },
+		type: "ROLE",
+		config: { roleId, operation, durationMs: null }
+	}) satisfies Omit<RoleReward, "id">
+
 describe("Rewards", () => {
 	beforeEach(async () => {
 		const client = await verifyClient()
@@ -20,121 +32,101 @@ describe("Rewards", () => {
 	})
 
 	describe("createReward()", () => {
-		test("creates role reward with keep previous roles", async () => {
+		test("creates a role reward", async () => {
 			const client = await verifyClient()
-
-			const roleReward: Omit<RoleReward, "id"> = {
-				guildId: ids.server,
-				level: 5,
-				roleId: ids.roles["Role 1"],
-				removeRole: false
-			}
-			const createResult = await client.rewards.createReward(
+			const created = await client.rewards.createReward(
 				ids.server,
-				roleReward
+				roleReward(5, ids.roles["Role 1"], "ADD")
 			)
-			expect(createResult.id).toBeDefined()
+			expect(created.id).toBeDefined()
 
 			const rewards = await client.rewards.getRewards(ids.server)
 			expect(rewards).toHaveLength(1)
-			const firstReward = rewards[0]
-			if (!("roleId" in firstReward))
-				throw new Error("Role reward doesn't have roleId")
-			expect(firstReward.level).toBe(5)
-			expect(firstReward.roleId).toBe(ids.roles["Role 1"])
-			expect(firstReward.removeRole).toBe(false)
+			const reward = rewards[0]
+			if (reward.type !== "ROLE") throw new Error("Expected a role reward")
+			expect(reward.threshold.level).toBe(5)
+			expect(reward.config.roleId).toBe(ids.roles["Role 1"])
+			expect(reward.config.operation).toBe("ADD")
 		})
 
-		test("creates role reward with remove previous roles", async () => {
+		test("creates a role-removal reward", async () => {
 			const client = await verifyClient()
-
-			const roleReward: Omit<RoleReward, "id"> = {
-				guildId: ids.server,
-				level: 10,
-				roleId: ids.roles["Role 2"],
-				removeRole: true
-			}
-			const createResult = await client.rewards.createReward(
+			await client.rewards.createReward(
 				ids.server,
-				roleReward
+				roleReward(10, ids.roles["Role 2"], "REMOVE")
 			)
-			expect(createResult.id).toBeDefined()
 
 			const rewards = await client.rewards.getRewards(ids.server)
 			expect(rewards).toHaveLength(1)
 			const reward = rewards[0]
-			if (!("roleId" in reward))
-				throw new Error("Role reward doesn't have roleId")
-			expect(reward.level).toBe(10)
-			expect(reward.roleId).toBe(ids.roles["Role 2"])
-			expect(reward.removeRole).toBe(true)
+			if (reward.type !== "ROLE") throw new Error("Expected a role reward")
+			expect(reward.threshold.level).toBe(10)
+			expect(reward.config.roleId).toBe(ids.roles["Role 2"])
+			expect(reward.config.operation).toBe("REMOVE")
 		})
 
-		test("creates message reward with channel", async () => {
+		test("creates a message reward with a channel", async () => {
 			const client = await verifyClient()
-
-			const messageReward = {
-				type: "message" as const,
-				guildId: ids.server,
-				level: 15,
-				message: "Congratulations on reaching level 15!",
-				channelId: ids.channel
-			}
-			await client.rewards.createReward(ids.server, messageReward)
+			await client.rewards.createReward(ids.server, {
+				type: "MESSAGE",
+				threshold: { level: 15, prestige: null },
+				eligibility: { requiredRoleId: null },
+				config: {
+					message: "Congratulations on reaching level 15!",
+					channelId: ids.channel
+				}
+			})
 
 			const rewards = await client.rewards.getRewards(ids.server)
 			expect(rewards).toHaveLength(1)
 			const reward = rewards[0]
-			if (!("message" in reward))
-				throw new Error("Message reward doesn't have message")
-			expect(reward.level).toBe(15)
-			expect(reward.message).toBe("Congratulations on reaching level 15!")
-			expect(reward.channelId).toBe(ids.channel)
+			if (reward.type !== "MESSAGE")
+				throw new Error("Expected a message reward")
+			expect(reward.threshold.level).toBe(15)
+			expect(reward.config.message).toBe(
+				"Congratulations on reaching level 15!"
+			)
+			expect(reward.config.channelId).toBe(ids.channel)
 		})
 
-		test("creates message reward without channel", async () => {
+		test("creates a message reward without a channel", async () => {
 			const client = await verifyClient()
-
-			const messageReward = {
-				type: "message" as const,
-				guildId: ids.server,
-				level: 20,
-				message: "Congratulations on reaching level 20!"
-			}
-			await client.rewards.createReward(ids.server, messageReward)
+			await client.rewards.createReward(ids.server, {
+				type: "MESSAGE",
+				threshold: { level: 20, prestige: null },
+				eligibility: { requiredRoleId: null },
+				config: {
+					message: "Congratulations on reaching level 20!",
+					channelId: null
+				}
+			})
 
 			const rewards = await client.rewards.getRewards(ids.server)
 			expect(rewards).toHaveLength(1)
 			const reward = rewards[0]
-			if (!("message" in reward))
-				throw new Error("Message reward doesn't have message")
-			expect(reward.level).toBe(20)
-			expect(reward.message).toBe("Congratulations on reaching level 20!")
-			expect(reward.channelId).toBeNull()
+			if (reward.type !== "MESSAGE")
+				throw new Error("Expected a message reward")
+			expect(reward.threshold.level).toBe(20)
+			expect(reward.config.message).toBe(
+				"Congratulations on reaching level 20!"
+			)
+			expect(reward.config.channelId).toBeNull()
 		})
 	})
 
 	describe("deleteReward()", () => {
-		test("deletes specific reward", async () => {
+		test("deletes a specific reward", async () => {
 			const client = await verifyClient()
-
-			// Create a reward first
-			const roleReward: Omit<RoleReward, "id"> = {
-				guildId: ids.server,
-				level: 5,
-				roleId: ids.roles["Role 1"],
-				removeRole: false
-			}
-			const createResult = await client.rewards.createReward(
+			const created = await client.rewards.createReward(
 				ids.server,
-				roleReward
+				roleReward(5, ids.roles["Role 1"], "ADD")
 			)
 
-			// Then delete it
-			await client.rewards.deleteReward(ids.server, createResult.id)
+			const deleted = await client.rewards.deleteReward(ids.server, created.id)
+			expect(deleted).toEqual({ id: created.id, deleted: true })
 
-			const rewardsAfterDelete = await client.rewards.getRewards(ids.server)
-			expect(rewardsAfterDelete).toHaveLength(0)
+			const rewards = await client.rewards.getRewards(ids.server)
+			expect(rewards).toHaveLength(0)
 		})
 	})
 
