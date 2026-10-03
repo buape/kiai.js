@@ -12,15 +12,10 @@ import type {
 
 export class Denylist extends BaseHandler {
 	async getDenylists(guildId: string) {
-		return this._handler.request<Denylists>(
-			`/${encodeURIComponent(guildId)}/denylist`
-		)
+		return this._handler.request<Denylists>(`/${encodeURIComponent(guildId)}/denylist`)
 	}
 
-	async createDenylist(
-		guildId: string,
-		data: { type: DenylistCreateType; id: string }
-	) {
+	async createDenylist(guildId: string, data: { type: DenylistCreateType; id: string }) {
 		return this._handler.request<DenylistEntry>(
 			`/${encodeURIComponent(guildId)}/denylist`,
 			"POST",

@@ -33,8 +33,7 @@ describe("Multipliers", () => {
 			const multipliers = await client.multipliers.getMultipliers(ids.server)
 			expect(multipliers.multipliers).toHaveLength(1)
 			const firstMultiplier = multipliers.multipliers[0]
-			if (!("roleId" in firstMultiplier))
-				throw new Error("Role multiplier isn't a role multiplier")
+			if (!("roleId" in firstMultiplier)) throw new Error("Role multiplier isn't a role multiplier")
 			expect(firstMultiplier.roleId).toBe(ids.roles["Role 1"])
 			expect(firstMultiplier.multiplier).toBe(1.5)
 		})
@@ -53,8 +52,7 @@ describe("Multipliers", () => {
 			const multipliers = await client.multipliers.getMultipliers(ids.server)
 			expect(multipliers.multipliers).toHaveLength(1)
 			const highMultiplier = multipliers.multipliers[0]
-			if (!("roleId" in highMultiplier))
-				throw new Error("Role multiplier not found")
+			if (!("roleId" in highMultiplier)) throw new Error("Role multiplier not found")
 			expect(highMultiplier.roleId).toBe(ids.roles["Role 2"])
 			expect(highMultiplier.multiplier).toBe(5.0)
 		})
@@ -68,16 +66,12 @@ describe("Multipliers", () => {
 				channelId: ids.channel,
 				multiplier: 2.0
 			}
-			await client.multipliers.createMultiplier(
-				ids.server,
-				channelMultiplierData
-			)
+			await client.multipliers.createMultiplier(ids.server, channelMultiplierData)
 
 			const multipliers = await client.multipliers.getMultipliers(ids.server)
 			expect(multipliers.multipliers).toHaveLength(1)
 			const channelMultiplier = multipliers.multipliers[0]
-			if (!("channelId" in channelMultiplier))
-				throw new Error("Channel multiplier not found")
+			if (!("channelId" in channelMultiplier)) throw new Error("Channel multiplier not found")
 			expect(channelMultiplier.channelId).toBe(ids.channel)
 			expect(channelMultiplier.multiplier).toBe(2.0)
 		})
@@ -91,16 +85,12 @@ describe("Multipliers", () => {
 				channelId: ids.channel,
 				multiplier: 0.5
 			}
-			await client.multipliers.createMultiplier(
-				ids.server,
-				channelMultiplierData
-			)
+			await client.multipliers.createMultiplier(ids.server, channelMultiplierData)
 
 			const multipliers = await client.multipliers.getMultipliers(ids.server)
 			expect(multipliers.multipliers).toHaveLength(1)
 			const lowMultiplier = multipliers.multipliers[0]
-			if (!("channelId" in lowMultiplier))
-				throw new Error("Channel multiplier not found")
+			if (!("channelId" in lowMultiplier)) throw new Error("Channel multiplier not found")
 			expect(lowMultiplier.channelId).toBe(ids.channel)
 			expect(lowMultiplier.multiplier).toBe(0.5)
 		})
@@ -124,8 +114,7 @@ describe("Multipliers", () => {
 				"role",
 				ids.roles["Role 1"]
 			)
-			if (!("roleId" in roleMultiplier))
-				throw new Error("Role multiplier isn't a role multiplier")
+			if (!("roleId" in roleMultiplier)) throw new Error("Role multiplier isn't a role multiplier")
 			expect(roleMultiplier.roleId).toBe(ids.roles["Role 1"])
 			expect(roleMultiplier.multiplier).toBe(1.5)
 		})
@@ -140,10 +129,7 @@ describe("Multipliers", () => {
 				channelId: ids.channel,
 				multiplier: 2.0
 			}
-			await client.multipliers.createMultiplier(
-				ids.server,
-				channelMultiplierData
-			)
+			await client.multipliers.createMultiplier(ids.server, channelMultiplierData)
 
 			const channelMultiplier = await client.multipliers.getMultiplier(
 				ids.server,

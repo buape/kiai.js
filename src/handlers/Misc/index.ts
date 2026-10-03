@@ -18,32 +18,21 @@ export class Misc extends BaseHandler {
 		return this._handler.request<MeResponse>(
 			"/me",
 			"GET",
-			Object.fromEntries(
-				Object.entries(options).filter(([, value]) => value !== undefined)
-			)
+			Object.fromEntries(Object.entries(options).filter(([, value]) => value !== undefined))
 		)
 	}
 
 	/** Send a virtual message to the API. */
 	async postVirtualMessage(message: VirtualMessage) {
-		return this._handler.request<SuccessResponse>(
-			"/virtual_message",
-			"POST",
-			{},
-			message
-		)
+		return this._handler.request<SuccessResponse>("/virtual_message", "POST", {}, message)
 	}
 
 	async exportGuild(guildId: string) {
-		return this._handler.request<GuildExportResponse>(
-			`/${encodeURIComponent(guildId)}/export`
-		)
+		return this._handler.request<GuildExportResponse>(`/${encodeURIComponent(guildId)}/export`)
 	}
 
 	async getGuildPremium(guildId: string) {
-		return this._handler.request<PremiumStatus>(
-			`/${encodeURIComponent(guildId)}/premium`
-		)
+		return this._handler.request<PremiumStatus>(`/${encodeURIComponent(guildId)}/premium`)
 	}
 
 	async getMemberPremium(guildId: string, userId: string) {
@@ -53,9 +42,7 @@ export class Misc extends BaseHandler {
 	}
 
 	async getGuildBlacklist(guildId: string) {
-		return this._handler.request<BlacklistStatus>(
-			`/${encodeURIComponent(guildId)}/blacklist`
-		)
+		return this._handler.request<BlacklistStatus>(`/${encodeURIComponent(guildId)}/blacklist`)
 	}
 
 	async getMemberBlacklist(guildId: string, userId: string) {

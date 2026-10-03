@@ -74,12 +74,7 @@ export type WebhookReward = {
 	config: WebhookRewardConfig
 }
 
-export type Reward =
-	| RoleReward
-	| MoneyReward
-	| MessageReward
-	| NicknameReward
-	| WebhookReward
+export type Reward = RoleReward | MoneyReward | MessageReward | NicknameReward | WebhookReward
 
 export type CreateReward =
 	| Omit<RoleReward, "id">

@@ -31,18 +31,13 @@ export function load(app) {
 				"https://kiai.app"
 			)
 
-			page.contents = page.contents.replace(
-				/(?<!\\)\[([^\]]*)\]\(([^)]*)\)/g,
-				(_, text, link) => {
-					const url = new URL(link, base)
-					if (url.origin !== base.origin) return `[${text}](${link})`
+			page.contents = page.contents.replace(/(?<!\\)\[([^\]]*)\]\(([^)]*)\)/g, (_, text, link) => {
+				const url = new URL(link, base)
+				if (url.origin !== base.origin) return `[${text}](${link})`
 
-					url.pathname = url.pathname
-						.replace(/\.mdx?$/, "")
-						.replace(/\/index$/, "")
-					return `[${text}](${url.pathname}${url.search}${url.hash})`
-				}
-			)
+				url.pathname = url.pathname.replace(/\.mdx?$/, "").replace(/\/index$/, "")
+				return `[${text}](${url.pathname}${url.search}${url.hash})`
+			})
 		}
 	)
 }

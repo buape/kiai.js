@@ -70,11 +70,7 @@ describe("Denylist", () => {
 				id: ids.roles["Role 1"]
 			})
 
-			await client.denylist.deleteDenylistById(
-				ids.server,
-				"role",
-				ids.roles["Role 1"]
-			)
+			await client.denylist.deleteDenylistById(ids.server, "role", ids.roles["Role 1"])
 
 			const denylists = await client.denylist.getDenylists(ids.server)
 			expect(denylists.roles).toHaveLength(0)
@@ -89,11 +85,7 @@ describe("Denylist", () => {
 				id: ids.users.buape
 			})
 
-			await client.denylist.deleteDenylistById(
-				ids.server,
-				"user",
-				ids.users.buape
-			)
+			await client.denylist.deleteDenylistById(ids.server, "user", ids.users.buape)
 
 			const denylists = await client.denylist.getDenylists(ids.server)
 			expect(denylists.users).toHaveLength(0)
@@ -108,11 +100,7 @@ describe("Denylist", () => {
 				id: ids.channel
 			})
 
-			await client.denylist.deleteDenylistById(
-				ids.server,
-				"channel",
-				ids.channel
-			)
+			await client.denylist.deleteDenylistById(ids.server, "channel", ids.channel)
 
 			const denylists = await client.denylist.getDenylists(ids.server)
 			expect(denylists.channels).toHaveLength(0)
@@ -127,11 +115,7 @@ describe("Denylist", () => {
 				id: ids.roles["Role 1"]
 			})
 
-			await client.denylist.deleteDenylistById(
-				ids.server,
-				"internal",
-				created.id
-			)
+			await client.denylist.deleteDenylistById(ids.server, "internal", created.id)
 
 			const denylists = await client.denylist.getDenylists(ids.server)
 			expect(denylists.roles).toHaveLength(0)
@@ -171,10 +155,7 @@ describe("Denylist", () => {
 			})
 
 			// Delete all role denylists
-			const deleteResult = await client.denylist.deleteAllDenylistsByType(
-				ids.server,
-				"role"
-			)
+			const deleteResult = await client.denylist.deleteAllDenylistsByType(ids.server, "role")
 			expect(deleteResult.count).toBe(2)
 
 			const denylists = await client.denylist.getDenylists(ids.server)
@@ -197,10 +178,7 @@ describe("Denylist", () => {
 			})
 
 			// Delete all user denylists
-			const deleteResult = await client.denylist.deleteAllDenylistsByType(
-				ids.server,
-				"user"
-			)
+			const deleteResult = await client.denylist.deleteAllDenylistsByType(ids.server, "user")
 			expect(deleteResult.count).toBe(1)
 
 			const denylists = await client.denylist.getDenylists(ids.server)
@@ -218,10 +196,7 @@ describe("Denylist", () => {
 			})
 
 			// Delete all channel denylists
-			const deleteResult = await client.denylist.deleteAllDenylistsByType(
-				ids.server,
-				"channel"
-			)
+			const deleteResult = await client.denylist.deleteAllDenylistsByType(ids.server, "channel")
 			expect(deleteResult.count).toBe(1)
 
 			const denylists = await client.denylist.getDenylists(ids.server)

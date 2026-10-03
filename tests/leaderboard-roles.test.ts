@@ -12,9 +12,7 @@ describe("LeaderboardRoles", () => {
 			const client = await verifyClient()
 			await client.leaderboardRoles.clearLeaderboardRoles(ids.server)
 
-			const roles = await client.leaderboardRoles.getLeaderboardRoles(
-				ids.server
-			)
+			const roles = await client.leaderboardRoles.getLeaderboardRoles(ids.server)
 			expect(roles).toHaveLength(0)
 		})
 	})
@@ -29,9 +27,7 @@ describe("LeaderboardRoles", () => {
 				time: "ALL"
 			})
 
-			const roles = await client.leaderboardRoles.getLeaderboardRoles(
-				ids.server
-			)
+			const roles = await client.leaderboardRoles.getLeaderboardRoles(ids.server)
 			expect(roles).toHaveLength(1)
 			expect(roles[0].roleId).toBe(ids.roles["Role 1"])
 			expect(roles[0].type).toBe("FIRST")
@@ -47,9 +43,7 @@ describe("LeaderboardRoles", () => {
 				time: "WEEK"
 			})
 
-			const roles = await client.leaderboardRoles.getLeaderboardRoles(
-				ids.server
-			)
+			const roles = await client.leaderboardRoles.getLeaderboardRoles(ids.server)
 			expect(roles).toHaveLength(1)
 			const weeklyRole = roles[0]
 			expect(weeklyRole.roleId).toBe(ids.roles["Role 2"])
@@ -66,9 +60,7 @@ describe("LeaderboardRoles", () => {
 				time: "MONTH"
 			})
 
-			const roles = await client.leaderboardRoles.getLeaderboardRoles(
-				ids.server
-			)
+			const roles = await client.leaderboardRoles.getLeaderboardRoles(ids.server)
 			expect(roles).toHaveLength(1)
 			const monthlyRole = roles[0]
 			expect(monthlyRole.roleId).toBe(ids.roles["Role 1"])
@@ -93,18 +85,12 @@ describe("LeaderboardRoles", () => {
 				time: "WEEK"
 			})
 
-			const roles = await client.leaderboardRoles.getLeaderboardRoles(
-				ids.server
-			)
+			const roles = await client.leaderboardRoles.getLeaderboardRoles(ids.server)
 			expect(roles).toHaveLength(2)
 
-			await client.leaderboardRoles.deleteLeaderboardRole(
-				ids.server,
-				roles[0].roleId
-			)
+			await client.leaderboardRoles.deleteLeaderboardRole(ids.server, roles[0].roleId)
 
-			const rolesAfterDelete =
-				await client.leaderboardRoles.getLeaderboardRoles(ids.server)
+			const rolesAfterDelete = await client.leaderboardRoles.getLeaderboardRoles(ids.server)
 			expect(rolesAfterDelete).toHaveLength(1)
 			expect(rolesAfterDelete[0].roleId).toBe(roles[1].roleId)
 		})
@@ -126,9 +112,7 @@ describe("LeaderboardRoles", () => {
 				time: "WEEK"
 			})
 
-			const roles = await client.leaderboardRoles.getLeaderboardRoles(
-				ids.server
-			)
+			const roles = await client.leaderboardRoles.getLeaderboardRoles(ids.server)
 			expect(Array.isArray(roles)).toBe(true)
 			expect(roles.length).toBe(2)
 

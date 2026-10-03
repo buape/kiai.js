@@ -26,9 +26,7 @@ export class Rewards extends BaseHandler {
 		return this._handler.request<Reward[]>(
 			`/${encodeURIComponent(guildId)}/rewards`,
 			"GET",
-			Object.fromEntries(
-				Object.entries(filters).filter(([, value]) => value !== undefined)
-			)
+			Object.fromEntries(Object.entries(filters).filter(([, value]) => value !== undefined))
 		)
 	}
 

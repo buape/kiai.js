@@ -11,9 +11,7 @@ import type {
 
 export class Multipliers extends BaseHandler {
 	async getMultipliers(guildId: string) {
-		return this._handler.request<MultiplierResponse>(
-			`/${encodeURIComponent(guildId)}/multipliers`
-		)
+		return this._handler.request<MultiplierResponse>(`/${encodeURIComponent(guildId)}/multipliers`)
 	}
 
 	async createMultiplier(guildId: string, data: CreateMultiplier) {
@@ -39,22 +37,14 @@ export class Multipliers extends BaseHandler {
 		)
 	}
 
-	async getMultiplier(
-		guildId: string,
-		type: "channel" | "role" | "internal",
-		id: string
-	) {
+	async getMultiplier(guildId: string, type: "channel" | "role" | "internal", id: string) {
 		if (type === "internal") return this.getMultiplierById(guildId, id)
 		return this._handler.request<Multiplier>(
 			`/${encodeURIComponent(guildId)}/multipliers/${type}/${encodeURIComponent(id)}`
 		)
 	}
 
-	async deleteMultiplier(
-		guildId: string,
-		type: "channel" | "role",
-		id: string
-	) {
+	async deleteMultiplier(guildId: string, type: "channel" | "role", id: string) {
 		return this._handler.request<Multiplier>(
 			`/${encodeURIComponent(guildId)}/multipliers/${type}/${encodeURIComponent(id)}`,
 			"DELETE"

@@ -14,19 +14,14 @@ export class RatelimitError extends Error {
 	resetAfter: number
 	message: string
 
-	constructor(
-		status: number,
-		resetAfter: number,
-		data: RatelimitErrorResponse
-	) {
+	constructor(status: number, resetAfter: number, data: RatelimitErrorResponse) {
 		super()
 		this.name = this.constructor.name
 		Error.captureStackTrace(this, this.constructor)
 		this.status = status
 		this.resetAfter = resetAfter
 		this.message =
-			data.message ||
-			`You are currently ratelimited! Try again in ${formatTime(resetAfter)}`
+			data.message || `You are currently ratelimited! Try again in ${formatTime(resetAfter)}`
 	}
 }
 

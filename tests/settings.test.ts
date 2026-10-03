@@ -10,31 +10,26 @@ describe("Settings", () => {
 			expect(settings).toBeDefined()
 			expect(settings.id).toBeString()
 			expect(
-				settings.levelUpChannel === null ||
-					typeof settings.levelUpChannel === "string"
+				settings.levelUpChannel === null || typeof settings.levelUpChannel === "string"
 			).toBeTrue()
 			expect(settings.sendLevelUpMessages).toBeBoolean()
 			expect(settings.autoDeleteLevelUpMessages).toBeBoolean()
 			expect(settings.messageXpEnabled).toBeBoolean()
 			expect(settings.minXp).toBeInteger()
 			expect(settings.maxXp).toBeInteger()
-			expect(
-				settings.levelCap === null || typeof settings.levelCap === "number"
-			).toBeTrue()
+			expect(settings.levelCap === null || typeof settings.levelCap === "number").toBeTrue()
 			expect(settings.cooldown).toBeInteger()
 			expect(settings.resetXpOnLeave).toBeBoolean()
 			expect(settings.resetXpOnBan).toBeBoolean()
 			expect(settings.stackRoleRewards).toBeBoolean()
 			expect(
-				settings.nicknameFormat === null ||
-					typeof settings.nicknameFormat === "string"
+				settings.nicknameFormat === null || typeof settings.nicknameFormat === "string"
 			).toBeTrue()
 			expect(settings.xpStreakEnabled).toBeBoolean()
 			expect(settings.xpStreakMinDays).toBeInteger()
 			expect(settings.xpStreakDayRequired).toBeInteger()
 			expect(
-				settings.xpStreakChannel === null ||
-					typeof settings.xpStreakChannel === "string"
+				settings.xpStreakChannel === null || typeof settings.xpStreakChannel === "string"
 			).toBeTrue()
 			expect(settings.xpStreakBonus).toBeInteger()
 			expect(settings.xpStreakMessage).toBeString()
@@ -51,12 +46,10 @@ describe("Settings", () => {
 			expect(settings.xpDropTimeBetweenDropsMax).toBeInteger()
 			expect(settings.xpDropExpiresAfter).toBeInteger()
 			expect(
-				settings.rankCardBackground === null ||
-					typeof settings.rankCardBackground === "string"
+				settings.rankCardBackground === null || typeof settings.rankCardBackground === "string"
 			).toBeTrue()
 			expect(
-				settings.rankCardPrimaryColor === null ||
-					typeof settings.rankCardPrimaryColor === "string"
+				settings.rankCardPrimaryColor === null || typeof settings.rankCardPrimaryColor === "string"
 			).toBeTrue()
 			expect(
 				settings.rankCardSecondaryColor === null ||

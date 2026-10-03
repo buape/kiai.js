@@ -1,12 +1,13 @@
 {
 	"recommendations": [
-		"biomejs.biome",
+		"oxc.oxc-vscode",
 		"streetsidesoftware.code-spell-checker",
 		"editorconfig.editorconfig"
 	],
 	"unwantedRecommendations": [
 		"dbaeumer.vscode-eslint",
 		"esbenp.prettier-vscode",
-		"rvest.vs-code-prettier-eslint"
+		"rvest.vs-code-prettier-eslint",
+		"biomejs.biome"
 	]
 }

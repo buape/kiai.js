@@ -14,10 +14,7 @@ export type Multiplier = {
 export type CreateMultiplier = {
 	multiplier: number
 	expiresAt?: string | number | Date
-} & (
-	| { channelId: string; roleId?: never }
-	| { roleId: string; channelId?: never }
-)
+} & ({ channelId: string; roleId?: never } | { roleId: string; channelId?: never })
 
 /** @deprecated Use CreateMultiplier; the v3 API infers the type from channelId or roleId. */
 export type RoleMultiplier = Extract<CreateMultiplier, { roleId: string }> & {
@@ -26,10 +23,10 @@ export type RoleMultiplier = Extract<CreateMultiplier, { roleId: string }> & {
 }
 
 /** @deprecated Use CreateMultiplier; the v3 API infers the type from channelId or roleId. */
-export type ChannelMultiplier = Extract<
-	CreateMultiplier,
-	{ channelId: string }
-> & { guildId?: string; type?: "channel" }
+export type ChannelMultiplier = Extract<CreateMultiplier, { channelId: string }> & {
+	guildId?: string
+	type?: "channel"
+}
 
 export type MultiplierResponse = {
 	guildId: string

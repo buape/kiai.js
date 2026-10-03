@@ -11,9 +11,7 @@ import type {
 
 export class Cooldowns extends BaseHandler {
 	async getCooldowns(guildId: string) {
-		return this._handler.request<CooldownsResponse>(
-			`/${encodeURIComponent(guildId)}/cooldowns`
-		)
+		return this._handler.request<CooldownsResponse>(`/${encodeURIComponent(guildId)}/cooldowns`)
 	}
 
 	async clearAllCooldowns(guildId: string) {

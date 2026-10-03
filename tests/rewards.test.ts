@@ -2,11 +2,7 @@ import { afterAll, beforeEach, describe, expect, test } from "bun:test"
 import type { RoleReward } from "../src"
 import { ids, verifyClient } from "./_setup"
 
-const roleReward = (
-	level: number,
-	roleId: string,
-	operation: "ADD" | "REMOVE"
-) =>
+const roleReward = (level: number, roleId: string, operation: "ADD" | "REMOVE") =>
 	({
 		threshold: { level, prestige: null },
 		eligibility: { requiredRoleId: null },
@@ -51,10 +47,7 @@ describe("Rewards", () => {
 
 		test("creates a role-removal reward", async () => {
 			const client = await verifyClient()
-			await client.rewards.createReward(
-				ids.server,
-				roleReward(10, ids.roles["Role 2"], "REMOVE")
-			)
+			await client.rewards.createReward(ids.server, roleReward(10, ids.roles["Role 2"], "REMOVE"))
 
 			const rewards = await client.rewards.getRewards(ids.server)
 			expect(rewards).toHaveLength(1)
@@ -80,12 +73,9 @@ describe("Rewards", () => {
 			const rewards = await client.rewards.getRewards(ids.server)
 			expect(rewards).toHaveLength(1)
 			const reward = rewards[0]
-			if (reward.type !== "MESSAGE")
-				throw new Error("Expected a message reward")
+			if (reward.type !== "MESSAGE") throw new Error("Expected a message reward")
 			expect(reward.threshold.level).toBe(15)
-			expect(reward.config.message).toBe(
-				"Congratulations on reaching level 15!"
-			)
+			expect(reward.config.message).toBe("Congratulations on reaching level 15!")
 			expect(reward.config.channelId).toBe(ids.channel)
 		})
 
@@ -104,12 +94,9 @@ describe("Rewards", () => {
 			const rewards = await client.rewards.getRewards(ids.server)
 			expect(rewards).toHaveLength(1)
 			const reward = rewards[0]
-			if (reward.type !== "MESSAGE")
-				throw new Error("Expected a message reward")
+			if (reward.type !== "MESSAGE") throw new Error("Expected a message reward")
 			expect(reward.threshold.level).toBe(20)
-			expect(reward.config.message).toBe(
-				"Congratulations on reaching level 20!"
-			)
+			expect(reward.config.message).toBe("Congratulations on reaching level 20!")
 			expect(reward.config.channelId).toBeNull()
 		})
 	})

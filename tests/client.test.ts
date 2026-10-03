@@ -1,6 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import type { VirtualMessage } from "../src"
-import { ids, verifyClient } from "./_setup"
+import { verifyClient } from "./_setup"
 
 describe("KiaiClient Core Methods", () => {
 	test("getRoot() returns API information", async () => {

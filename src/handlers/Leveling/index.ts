@@ -19,8 +19,7 @@ export class Leveling extends BaseHandler {
 		const options =
 			typeof optionsOrStart === "number"
 				? { start: optionsOrStart, end: legacyEnd }
-				: (optionsOrStart ??
-					(legacyEnd === undefined ? {} : { end: legacyEnd }))
+				: (optionsOrStart ?? (legacyEnd === undefined ? {} : { end: legacyEnd }))
 		for (const [name, value] of Object.entries(options)) {
 			if (
 				value !== undefined &&
@@ -33,9 +32,7 @@ export class Leveling extends BaseHandler {
 		return this._handler.request<Leaderboard>(
 			`/${encodeURIComponent(guildId)}/leaderboard`,
 			"GET",
-			Object.fromEntries(
-				Object.entries(options).filter(([, value]) => value !== undefined)
-			)
+			Object.fromEntries(Object.entries(options).filter(([, value]) => value !== undefined))
 		)
 	}
 
@@ -89,8 +86,6 @@ export class Leveling extends BaseHandler {
 	}
 
 	async getStats(guildId: string) {
-		return this._handler.request<GuildStats>(
-			`/${encodeURIComponent(guildId)}/stats`
-		)
+		return this._handler.request<GuildStats>(`/${encodeURIComponent(guildId)}/stats`)
 	}
 }

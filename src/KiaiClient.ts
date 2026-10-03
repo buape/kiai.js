@@ -55,16 +55,12 @@ export class KiaiClient {
 			 * The fetch function to use for Kiai's API
 			 * If you want to use your own fetch function (e.g. for a custom proxy), you can pass it here
 			 */
-			fetchFunction?: (
-				url: URL | string,
-				init?: RequestInit | undefined
-			) => Promise<Response>
+			fetchFunction?: (url: URL | string, init?: RequestInit | undefined) => Promise<Response>
 		}
 	) {
 		this.apiKey = apiKey
 		this.version = options?.version || "v3"
-		this.baseURL =
-			options?.baseURL || `https://www.kiai.app/api/${this.version}`
+		this.baseURL = options?.baseURL || `https://www.kiai.app/api/${this.version}`
 		this.debug = options?.debug || false
 		this._requestHandler = new RequestHandler(
 			this.baseURL,
@@ -89,12 +85,6 @@ export class KiaiClient {
 	 * Get information about the API
 	 */
 	public async getRoot() {
-		return await this._requestHandler.request<RootResponse>(
-			"/",
-			"GET",
-			{},
-			undefined,
-			true
-		)
+		return await this._requestHandler.request<RootResponse>("/", "GET", {}, undefined, true)
 	}
 }

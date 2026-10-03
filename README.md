@@ -7,7 +7,6 @@
 
 The official JavaScript/TypeScript API library for Kiai - a powerful Discord leveling and rewards system.
 
-
 ## Installation
 
 ```bash
@@ -27,12 +26,12 @@ bun add kiai.js
 ## Quick Start
 
 ```typescript
-import { KiaiClient } from 'kiai.js';
+import { KiaiClient } from "kiai.js"
 
-const kiai = new KiaiClient('your-api-key'); // API v3 by default
+const kiai = new KiaiClient("your-api-key") // API v3 by default
 
-const member = await kiai.leveling.getMember('guild_id', 'user_id');
-console.log(`User XP: ${member?.xp ?? 0}`);
+const member = await kiai.leveling.getMember("guild_id", "user_id")
+console.log(`User XP: ${member?.xp ?? 0}`)
 ```
 
 ## Documentation
@@ -58,30 +57,30 @@ kiai.js provides several handlers to interact with different aspects of the API.
 
 ```typescript
 // Add XP to a user
-await kiai.leveling.addXp('guild_id', 'user_id', 100);
+await kiai.leveling.addXp("guild_id", "user_id", 100)
 
 // Query a leaderboard by category and period
-const leaderboard = await kiai.leveling.getLeaderboard('guild_id', {
-    type: 'xp',
-    time: 'WEEK',
-    start: 1,
-    end: 10
-});
+const leaderboard = await kiai.leveling.getLeaderboard("guild_id", {
+	type: "xp",
+	time: "WEEK",
+	start: 1,
+	end: 10
+})
 ```
 
 ### Managing Rewards
 
 ```typescript
 // Create a role reward
-const reward = await kiai.rewards.createReward('guild_id', {
-    type: 'ROLE',
-    threshold: { level: 10, prestige: null },
-    eligibility: { requiredRoleId: null },
-    config: { roleId: 'role_id', operation: 'ADD', durationMs: null }
-});
+const reward = await kiai.rewards.createReward("guild_id", {
+	type: "ROLE",
+	threshold: { level: 10, prestige: null },
+	eligibility: { requiredRoleId: null },
+	config: { roleId: "role_id", operation: "ADD", durationMs: null }
+})
 
 // List rewards (or filter by type, level, and prestige)
-const rewards = await kiai.rewards.getRewards('guild_id', { type: 'ROLE' });
+const rewards = await kiai.rewards.getRewards("guild_id", { type: "ROLE" })
 ```
 
 ## License
