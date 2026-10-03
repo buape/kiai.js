@@ -41,7 +41,7 @@
 		"build": "bun run build.ts",
 		"lint": "oxfmt --write . && oxlint",
 		"prepare": "lefthook install",
-		"publish": "bun run build && changeset version && changeset publish --no-git-tag",
+		"publish": "bun run build && bun x changeset publish --no-git-tag",
 		"publish:snapshot": "bun run build && changeset version --snapshot beta && changeset publish --tag beta --no-git-tag",
 		"test": "bun test",
 		"typecheck": "tsc --noEmit",
