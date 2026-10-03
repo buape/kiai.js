@@ -37,11 +37,25 @@ jobs:
           mkdir -p kiai-docs/content/kiai.js
           cp -r docs/* kiai-docs/content/kiai.js/
 
-      - name: Commit and Push
+      - name: Create documentation PR
+        env:
+          GH_TOKEN: ${{ secrets.BUAPEBOT_SECRET }}
         run: |
           cd kiai-docs
           git config user.name "BuapeBot"
           git config user.email "buapestudios@gmail.com"
+          git switch -C automation/kiai-js-docs
           git add .
+          if git diff --cached --quiet; then
+            echo "Documentation is already up to date"
+            exit 0
+          fi
           git commit -m "docs: update kiai.js documentation from kiai.js@${{ github.sha }}"
-          git push
+          git push --force origin automation/kiai-js-docs
+
+          pr=$(gh pr list --repo buape/kiai-docs --head buapebot:automation/kiai-js-docs --base v2 --json number --jq '.[0].number')
+          if [ -n "$pr" ]; then
+            gh pr edit "$pr" --repo buape/kiai-docs --title "docs: update kiai.js documentation" --body "Automated documentation update from kiai.js@${{ github.sha }}."
+          else
+            gh pr create --repo buape/kiai-docs --base v2 --head buapebot:automation/kiai-js-docs --title "docs: update kiai.js documentation" --body "Automated documentation update from kiai.js@${{ github.sha }}."
+          fi
