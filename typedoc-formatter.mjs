@@ -37,7 +37,9 @@ export function load(app) {
 					const url = new URL(link, base)
 					if (url.origin !== base.origin) return `[${text}](${link})`
 
-					url.pathname = url.pathname.replace(/\.mdx?$/, "").replace(/\/index$/, "")
+					url.pathname = url.pathname
+						.replace(/\.mdx?$/, "")
+						.replace(/\/index$/, "")
 					return `[${text}](${url.pathname}${url.search}${url.hash})`
 				}
 			)
