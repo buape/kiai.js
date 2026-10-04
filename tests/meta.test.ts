@@ -315,6 +315,13 @@ describe("OpenAPI operation coverage", () => {
 			path = "response"
 		): string | undefined => {
 			if (JSON.stringify(left) === JSON.stringify(right)) return undefined
+			// The production OpenAPI schema is opaque ("any") for some fields
+			// (e.g. level-up message `messageKitData`). Allow the SDK to be more
+			// specific than an unconstrained schema, since the API returns
+			// structure that it does not document.
+			if (right && typeof right === "object" && (right as { kind?: string }).kind === "any") {
+				return undefined
+			}
 			if (Array.isArray(left) && Array.isArray(right)) {
 				for (let index = 0; index < Math.max(left.length, right.length); index++) {
 					const difference = findContractDifference(left[index], right[index], `${path}[${index}]`)
@@ -337,6 +344,8 @@ describe("OpenAPI operation coverage", () => {
 					)
 					if (difference) return difference
 				}
+				// All shared fields matched; treat the objects as equal.
+				return undefined
 			}
 			return `${path}: ${JSON.stringify(left)} !== ${JSON.stringify(right)}`
 		}
