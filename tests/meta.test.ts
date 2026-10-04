@@ -128,71 +128,86 @@ describe("OpenAPI operation coverage", () => {
 			return variants.length === 1 ? variants[0] : { kind: "union", variants }
 		}
 
-		const typeToContract = (type: ts.Type, depth = 0, omitUndefined = false): unknown => {
+		const typeToContract = (
+			type: ts.Type,
+			depth = 0,
+			omitUndefined = false,
+			seen = new Set<ts.Type>()
+		): unknown => {
 			if (depth > 32) throw new Error("Type alias is recursively nested too deeply")
-			if (type.isUnion()) {
-				return makeUnion(
-					type.types
-						.filter((variant) => !omitUndefined || !(variant.flags & ts.TypeFlags.Undefined))
-						.map((variant) => typeToContract(variant, depth + 1))
-				)
-			}
-			if (type.flags & ts.TypeFlags.StringLiteral) {
-				return { kind: "literal", value: (type as ts.StringLiteralType).value }
-			}
-			if (type.flags & ts.TypeFlags.NumberLiteral) {
-				return { kind: "literal", value: (type as ts.NumberLiteralType).value }
-			}
-			if (type.flags & ts.TypeFlags.BooleanLiteral) {
-				return { kind: "literal", value: checker.typeToString(type) === "true" }
-			}
-			if (type.flags & ts.TypeFlags.Null) return { kind: "null" }
-			if (type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
-				return { kind: "any" }
-			}
-			if (type.flags & ts.TypeFlags.StringLike) return { kind: "string" }
-			if (type.flags & ts.TypeFlags.NumberLike) return { kind: "number" }
-			if (type.flags & ts.TypeFlags.BooleanLike) return { kind: "boolean" }
-			if (type.flags & ts.TypeFlags.Undefined) return { kind: "undefined" }
-
-			const symbolName = type.aliasSymbol?.name ?? type.getSymbol()?.name
-			if (symbolName === "Date") return { kind: "date" }
-			if (checker.isArrayType(type)) {
-				const itemType = checker.getTypeArguments(type as ts.TypeReference)[0]
-				if (!itemType) throw new Error("Array response type has no item type")
-				return { kind: "array", items: typeToContract(itemType, depth + 1) }
-			}
-
-			if (type.flags & ts.TypeFlags.Object) {
-				const properties = Object.fromEntries(
-					checker
-						.getPropertiesOfType(type)
-						.sort((left, right) => left.name.localeCompare(right.name))
-						.map((property) => {
-							const location = property.valueDeclaration ?? property.declarations?.[0]
-							if (!location) {
-								throw new Error(`Missing declaration for property ${property.name}`)
-							}
-							const optional = Boolean(property.flags & ts.SymbolFlags.Optional)
-							const propertyType = checker.getTypeOfSymbolAtLocation(property, location)
-							return [
-								property.name,
-								{
-									optional,
-									type: typeToContract(propertyType, depth + 1, optional)
-								}
-							]
-						})
-				)
-				const indexType = checker.getIndexTypeOfType(type, ts.IndexKind.String)
-				return {
-					kind: "object",
-					properties,
-					...(indexType ? { index: typeToContract(indexType, depth + 1) } : {})
+			// Guard against self-referential type aliases (e.g. recursive
+			// message component unions). If this exact type is already being
+			// expanded further up the stack, break the cycle rather than
+			// recursing until the depth limit.
+			if (seen.has(type)) return { kind: "any" }
+			seen.add(type)
+			try {
+				if (type.isUnion()) {
+					return makeUnion(
+						type.types
+							.filter((variant) => !omitUndefined || !(variant.flags & ts.TypeFlags.Undefined))
+							.map((variant) => typeToContract(variant, depth + 1, omitUndefined, seen))
+					)
 				}
-			}
+				if (type.flags & ts.TypeFlags.StringLiteral) {
+					return { kind: "literal", value: (type as ts.StringLiteralType).value }
+				}
+				if (type.flags & ts.TypeFlags.NumberLiteral) {
+					return { kind: "literal", value: (type as ts.NumberLiteralType).value }
+				}
+				if (type.flags & ts.TypeFlags.BooleanLiteral) {
+					return { kind: "literal", value: checker.typeToString(type) === "true" }
+				}
+				if (type.flags & ts.TypeFlags.Null) return { kind: "null" }
+				if (type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+					return { kind: "any" }
+				}
+				if (type.flags & ts.TypeFlags.StringLike) return { kind: "string" }
+				if (type.flags & ts.TypeFlags.NumberLike) return { kind: "number" }
+				if (type.flags & ts.TypeFlags.BooleanLike) return { kind: "boolean" }
+				if (type.flags & ts.TypeFlags.Undefined) return { kind: "undefined" }
 
-			throw new Error(`Unsupported TypeScript response type: ${checker.typeToString(type)}`)
+				const symbolName = type.aliasSymbol?.name ?? type.getSymbol()?.name
+				if (symbolName === "Date") return { kind: "date" }
+				if (checker.isArrayType(type)) {
+					const itemType = checker.getTypeArguments(type as ts.TypeReference)[0]
+					if (!itemType) throw new Error("Array response type has no item type")
+					return { kind: "array", items: typeToContract(itemType, depth + 1, false, seen) }
+				}
+
+				if (type.flags & ts.TypeFlags.Object) {
+					const properties = Object.fromEntries(
+						checker
+							.getPropertiesOfType(type)
+							.sort((left, right) => left.name.localeCompare(right.name))
+							.map((property) => {
+								const location = property.valueDeclaration ?? property.declarations?.[0]
+								if (!location) {
+									throw new Error(`Missing declaration for property ${property.name}`)
+								}
+								const optional = Boolean(property.flags & ts.SymbolFlags.Optional)
+								const propertyType = checker.getTypeOfSymbolAtLocation(property, location)
+								return [
+									property.name,
+									{
+										optional,
+										type: typeToContract(propertyType, depth + 1, optional, seen)
+									}
+								]
+							})
+					)
+					const indexType = checker.getIndexTypeOfType(type, ts.IndexKind.String)
+					return {
+						kind: "object",
+						properties,
+						...(indexType ? { index: typeToContract(indexType, depth + 1, false, seen) } : {})
+					}
+				}
+
+				throw new Error(`Unsupported TypeScript response type: ${checker.typeToString(type)}`)
+			} finally {
+				seen.delete(type)
+			}
 		}
 
 		const asObject = (value: unknown): Record<string, unknown> =>
