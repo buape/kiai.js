@@ -1,5 +1,11 @@
 # kiai.js
 
+## 4.0.1
+
+### Patch Changes
+
+- 7482310: Restore the exported `ApiPermission` enum for API application permission bit flags.
+
 ## 4.0.0
 
 ### Major Changes
