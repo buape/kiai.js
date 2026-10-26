@@ -17,7 +17,10 @@ export class RequestHandler {
 		baseURL: string,
 		apiKey: string,
 		debug = false,
-		fetchFunction: (url: URL | string, init?: RequestInit | undefined) => Promise<Response> = fetch
+		fetchFunction: (
+			url: URL | string,
+			init?: RequestInit | undefined
+		) => Promise<Response> = fetch
 	) {
 		this.baseURL = baseURL
 		this.apiKey = apiKey
@@ -64,14 +67,18 @@ export class RequestHandler {
 			if (this.debug) console.debug("Success: \n", response)
 			// Handle both wrapped and unwrapped responses
 			return (
-				response && typeof response === "object" && "data" in response ? response.data : response
+				response && typeof response === "object" && "data" in response
+					? response.data
+					: response
 			) as T
 		}
 
 		let errorData: ErrorResponse
 		let bodyResetAfter: number | undefined
 		try {
-			const parsed = (await res.json()) as Partial<ErrorResponse & { resetAfter: number | string }>
+			const parsed = (await res.json()) as Partial<
+				ErrorResponse & { resetAfter: number | string }
+			>
 			const parsedResetAfter = Number(parsed.resetAfter)
 			bodyResetAfter = Number.isFinite(parsedResetAfter) ? parsedResetAfter : undefined
 			errorData = {
@@ -89,7 +96,8 @@ export class RequestHandler {
 
 		if (res.status === 429) {
 			if (noError) return errorData as T
-			const resetAfter = bodyResetAfter ?? Number(res.headers.get("x-ratelimit-reset-after") ?? 0)
+			const resetAfter =
+				bodyResetAfter ?? Number(res.headers.get("x-ratelimit-reset-after") ?? 0)
 			const ratelimitData: RatelimitErrorResponse = {
 				...errorData,
 				resetAfter

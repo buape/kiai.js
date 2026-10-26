@@ -46,10 +46,12 @@ describe("Settings", () => {
 			expect(settings.xpDropTimeBetweenDropsMax).toBeInteger()
 			expect(settings.xpDropExpiresAfter).toBeInteger()
 			expect(
-				settings.rankCardBackground === null || typeof settings.rankCardBackground === "string"
+				settings.rankCardBackground === null ||
+					typeof settings.rankCardBackground === "string"
 			).toBeTrue()
 			expect(
-				settings.rankCardPrimaryColor === null || typeof settings.rankCardPrimaryColor === "string"
+				settings.rankCardPrimaryColor === null ||
+					typeof settings.rankCardPrimaryColor === "string"
 			).toBeTrue()
 			expect(
 				settings.rankCardSecondaryColor === null ||

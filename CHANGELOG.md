@@ -12,7 +12,7 @@
 
 - bc301b2: feat: update to v3 of the Kiai API
 
-  - There shouldn't be any major breaking changes to any routes, with the exception of the rewards routes. Rewards have very different response payloads now and will need adjusting.
+    - There shouldn't be any major breaking changes to any routes, with the exception of the rewards routes. Rewards have very different response payloads now and will need adjusting.
 
 ## 3.1.0
 
@@ -33,7 +33,7 @@
 
 - 9ddea48: feat: Kiai API v2
 
-  This release supports the new v2 of Kiai's API, which has several breaking changes from v1.
+    This release supports the new v2 of Kiai's API, which has several breaking changes from v1.
 
 ## 2.2.0
 
@@ -105,7 +105,7 @@
 
 - 700caf3: Implement all v1 API features
 
-  **This is a major release**, and thus, is a breaking change from previous early releases of Kiai.js.
+    **This is a major release**, and thus, is a breaking change from previous early releases of Kiai.js.
 
 ## 0.1.3
 

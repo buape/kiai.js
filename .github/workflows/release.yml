@@ -1,42 +1,42 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  release:
-    name: Release
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      id-token: write
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v7
-        with:
-          token: ${{ secrets.BUAPEBOT_SECRET }}
+    release:
+        name: Release
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
+            id-token: write
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v7
+              with:
+                  token: ${{ secrets.BUAPEBOT_SECRET }}
 
-      - name: Setup
-        uses: ./.github/actions/setup
+            - name: Setup
+              uses: ./.github/actions/setup
 
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org
-          package-manager-cache: false
+            - name: Setup Node
+              uses: actions/setup-node@v7
+              with:
+                  node-version: 24
+                  registry-url: https://registry.npmjs.org
+                  package-manager-cache: false
 
-      - name: Process Changesets
-        id: changesets
-        uses: changesets/action@v2.1.2
-        with:
-          publish-script: bun run publish
-          pr-title: "Pending Releases"
-          commit-message: "chore: update changelog and release"
-          github-token: ${{ secrets.BUAPEBOT_SECRET }}
-          push-with-git-cli: false
+            - name: Process Changesets
+              id: changesets
+              uses: changesets/action@v2.1.2
+              with:
+                  publish-script: bun run publish
+                  pr-title: "Pending Releases"
+                  commit-message: "chore: update changelog and release"
+                  github-token: ${{ secrets.BUAPEBOT_SECRET }}
+                  push-with-git-cli: false

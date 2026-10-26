@@ -133,7 +133,9 @@ describe("OpenAPI operation coverage", () => {
 			if (type.isUnion()) {
 				return makeUnion(
 					type.types
-						.filter((variant) => !omitUndefined || !(variant.flags & ts.TypeFlags.Undefined))
+						.filter(
+							(variant) => !omitUndefined || !(variant.flags & ts.TypeFlags.Undefined)
+						)
 						.map((variant) => typeToContract(variant, depth + 1))
 				)
 			}
@@ -174,7 +176,10 @@ describe("OpenAPI operation coverage", () => {
 								throw new Error(`Missing declaration for property ${property.name}`)
 							}
 							const optional = Boolean(property.flags & ts.SymbolFlags.Optional)
-							const propertyType = checker.getTypeOfSymbolAtLocation(property, location)
+							const propertyType = checker.getTypeOfSymbolAtLocation(
+								property,
+								location
+							)
 							return [
 								property.name,
 								{
@@ -216,7 +221,8 @@ describe("OpenAPI operation coverage", () => {
 					unionSchemas.every((variant) => {
 						const value = asObject(variant)
 						return (
-							value.type === "integer" || (value.type === "string" && value.format === "integer")
+							value.type === "integer" ||
+							(value.type === "string" && value.format === "integer")
 						)
 					})
 				) {
@@ -232,7 +238,10 @@ describe("OpenAPI operation coverage", () => {
 				if (objectParts) {
 					return {
 						kind: "object",
-						properties: Object.assign({}, ...parts.map((part) => asObject(part).properties))
+						properties: Object.assign(
+							{},
+							...parts.map((part) => asObject(part).properties)
+						)
 					}
 				}
 				return { kind: "intersection", parts }
@@ -285,7 +294,9 @@ describe("OpenAPI operation coverage", () => {
 				return {
 					kind: "object",
 					properties,
-					...(indexSchema !== undefined ? { index: schemaToContract(indexSchema, depth + 1) } : {})
+					...(indexSchema !== undefined
+						? { index: schemaToContract(indexSchema, depth + 1) }
+						: {})
 				}
 			}
 			return { kind: "any" }
@@ -317,7 +328,11 @@ describe("OpenAPI operation coverage", () => {
 			if (JSON.stringify(left) === JSON.stringify(right)) return undefined
 			if (Array.isArray(left) && Array.isArray(right)) {
 				for (let index = 0; index < Math.max(left.length, right.length); index++) {
-					const difference = findContractDifference(left[index], right[index], `${path}[${index}]`)
+					const difference = findContractDifference(
+						left[index],
+						right[index],
+						`${path}[${index}]`
+					)
 					if (difference) return difference
 				}
 				return `${path}: array lengths differ`
@@ -325,7 +340,9 @@ describe("OpenAPI operation coverage", () => {
 			if (left && right && typeof left === "object" && typeof right === "object") {
 				const leftObject = left as Record<string, unknown>
 				const rightObject = right as Record<string, unknown>
-				const keys = [...new Set([...Object.keys(leftObject), ...Object.keys(rightObject)])].sort()
+				const keys = [
+					...new Set([...Object.keys(leftObject), ...Object.keys(rightObject)])
+				].sort()
 				for (const key of keys) {
 					if (!(key in leftObject) || !(key in rightObject)) {
 						return `${path}.${key}: property missing on one side`
@@ -389,7 +406,9 @@ describe("OpenAPI operation coverage", () => {
 			const alias = typeAliases.get(aliasName)
 			if (
 				!alias ||
-				!ts.getModifiers(alias)?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)
+				!ts
+					.getModifiers(alias)
+					?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)
 			) {
 				missingTypeExports.add(`${aliasName}: type alias is not exported`)
 				continue
@@ -406,7 +425,10 @@ describe("OpenAPI operation coverage", () => {
 
 			const featurePath = modulePath.replace(/\/types$/, "")
 			const featureName = featurePath.replace(/^\.\/handlers\//, "./")
-			const featureIndex = readFileSync(resolve("src", featurePath.slice(2), "index.ts"), "utf8")
+			const featureIndex = readFileSync(
+				resolve("src", featurePath.slice(2), "index.ts"),
+				"utf8"
+			)
 			if (!/export type \* from ["']\.\/types["']/.test(featureIndex)) {
 				missingTypeExports.add(`${aliasName}: feature types are not re-exported`)
 			}
