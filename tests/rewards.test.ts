@@ -47,7 +47,10 @@ describe("Rewards", () => {
 
 		test("creates a role-removal reward", async () => {
 			const client = await verifyClient()
-			await client.rewards.createReward(ids.server, roleReward(10, ids.roles["Role 2"], "REMOVE"))
+			await client.rewards.createReward(
+				ids.server,
+				roleReward(10, ids.roles["Role 2"], "REMOVE")
+			)
 
 			const rewards = await client.rewards.getRewards(ids.server)
 			expect(rewards).toHaveLength(1)

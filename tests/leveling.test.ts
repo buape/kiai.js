@@ -23,7 +23,8 @@ describe("Leveling", () => {
 
 				await client.leveling.addXp(ids.server, userId, 100)
 				const memberAfterAdd = await client.leveling.getMember(ids.server, userId)
-				if (memberAfterAdd === null) throw new Error("Member data not found after adding XP")
+				if (memberAfterAdd === null)
+					throw new Error("Member data not found after adding XP")
 				expect(memberAfterAdd.xp).toBe(initialXp + 100)
 			})
 
@@ -55,7 +56,8 @@ describe("Leveling", () => {
 
 				await client.leveling.removeXp(ids.server, userId, 50)
 				const memberAfterRemove = await client.leveling.getMember(ids.server, userId)
-				if (memberAfterRemove === null) throw new Error("Member data not found after removing XP")
+				if (memberAfterRemove === null)
+					throw new Error("Member data not found after removing XP")
 				expect(memberAfterRemove.xp).toBe(initialXp - 50)
 			})
 
@@ -84,7 +86,8 @@ describe("Leveling", () => {
 
 				await client.leveling.setXp(ids.server, userId, 1000)
 				const memberAfterSet = await client.leveling.getMember(ids.server, userId)
-				if (memberAfterSet === null) throw new Error("Member data not found after setting XP")
+				if (memberAfterSet === null)
+					throw new Error("Member data not found after setting XP")
 				expect(memberAfterSet.xp).toBe(1000)
 			})
 
@@ -105,7 +108,8 @@ describe("Leveling", () => {
 
 				await client.leveling.setXp(ids.server, userId, 500.5)
 				const memberAfterSet = await client.leveling.getMember(ids.server, userId)
-				if (memberAfterSet === null) throw new Error("Member data not found after setting XP")
+				if (memberAfterSet === null)
+					throw new Error("Member data not found after setting XP")
 				expect(memberAfterSet.xp).toBe(500.5)
 				await client.leveling.setXp(ids.server, userId, member.xp)
 			})
@@ -116,7 +120,8 @@ describe("Leveling", () => {
 
 				await client.leveling.setXp(ids.server, userId, 0)
 				const memberAfterSet = await client.leveling.getMember(ids.server, userId)
-				if (memberAfterSet === null) throw new Error("Member data not found after setting XP")
+				if (memberAfterSet === null)
+					throw new Error("Member data not found after setting XP")
 				expect(memberAfterSet.xp).toBe(0)
 			})
 		})
@@ -136,13 +141,21 @@ describe("Leveling", () => {
 
 			test("gets leaderboard with start index only", async () => {
 				const client = await verifyClient()
-				const leaderboardWithStart = await client.leveling.getLeaderboard(ids.server, 1, undefined)
+				const leaderboardWithStart = await client.leveling.getLeaderboard(
+					ids.server,
+					1,
+					undefined
+				)
 				expect(Array.isArray(leaderboardWithStart)).toBe(true)
 			})
 
 			test("gets leaderboard with end index only", async () => {
 				const client = await verifyClient()
-				const leaderboardWithEnd = await client.leveling.getLeaderboard(ids.server, undefined, 10)
+				const leaderboardWithEnd = await client.leveling.getLeaderboard(
+					ids.server,
+					undefined,
+					10
+				)
 				expect(Array.isArray(leaderboardWithEnd)).toBe(true)
 				expect(leaderboardWithEnd.length).toBeLessThanOrEqual(10)
 			})

@@ -196,7 +196,10 @@ describe("Denylist", () => {
 			})
 
 			// Delete all channel denylists
-			const deleteResult = await client.denylist.deleteAllDenylistsByType(ids.server, "channel")
+			const deleteResult = await client.denylist.deleteAllDenylistsByType(
+				ids.server,
+				"channel"
+			)
 			expect(deleteResult.count).toBe(1)
 
 			const denylists = await client.denylist.getDenylists(ids.server)

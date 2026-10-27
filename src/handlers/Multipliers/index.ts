@@ -11,7 +11,9 @@ import type {
 
 export class Multipliers extends BaseHandler {
 	async getMultipliers(guildId: string) {
-		return this._handler.request<MultiplierResponse>(`/${encodeURIComponent(guildId)}/multipliers`)
+		return this._handler.request<MultiplierResponse>(
+			`/${encodeURIComponent(guildId)}/multipliers`
+		)
 	}
 
 	async createMultiplier(guildId: string, data: CreateMultiplier) {

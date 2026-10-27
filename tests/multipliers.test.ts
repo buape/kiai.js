@@ -33,7 +33,8 @@ describe("Multipliers", () => {
 			const multipliers = await client.multipliers.getMultipliers(ids.server)
 			expect(multipliers.multipliers).toHaveLength(1)
 			const firstMultiplier = multipliers.multipliers[0]
-			if (!("roleId" in firstMultiplier)) throw new Error("Role multiplier isn't a role multiplier")
+			if (!("roleId" in firstMultiplier))
+				throw new Error("Role multiplier isn't a role multiplier")
 			expect(firstMultiplier.roleId).toBe(ids.roles["Role 1"])
 			expect(firstMultiplier.multiplier).toBe(1.5)
 		})
@@ -114,7 +115,8 @@ describe("Multipliers", () => {
 				"role",
 				ids.roles["Role 1"]
 			)
-			if (!("roleId" in roleMultiplier)) throw new Error("Role multiplier isn't a role multiplier")
+			if (!("roleId" in roleMultiplier))
+				throw new Error("Role multiplier isn't a role multiplier")
 			expect(roleMultiplier.roleId).toBe(ids.roles["Role 1"])
 			expect(roleMultiplier.multiplier).toBe(1.5)
 		})
