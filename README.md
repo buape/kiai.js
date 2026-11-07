@@ -43,7 +43,7 @@ For detailed documentation, visit our [documentation site](https://kiai.app/docs
 kiai.js provides several handlers to interact with different aspects of the API. These handlers mirror the API categories on our [API v3 docs](https://www.kiai.app/api/v3/docs/json).
 
 - `Leveling` - Levels, XP, prestige, leaderboards, and server stats
-- `Rewards` - Declarative rewards, capabilities, and reconciliation jobs
+- `Rewards` - Declarative rewards, reward paths, capabilities, and reconciliation jobs
 - `LeaderboardRoles` and `AutoLeaderboards` - Leaderboard role and message management
 - `LevelUpMessages` - Read configured level-up messages
 - `Settings` - Read guild settings
@@ -82,6 +82,32 @@ const reward = await kiai.rewards.createReward("guild_id", {
 // List rewards (or filter by type, level, and prestige)
 const rewards = await kiai.rewards.getRewards("guild_id", { type: "ROLE" })
 ```
+
+### Reward Paths
+
+```typescript
+const path = await kiai.rewards.createPath("guild_id", { name: "Explorer" })
+const paths = await kiai.rewards.getPaths("guild_id")
+const current = await kiai.rewards.getPath("guild_id", path.id)
+
+// Replaces all editable fields. Use archived: true to archive instead of deleting.
+await kiai.rewards.replacePath("guild_id", path.id, {
+	name: current.name,
+	description: current.description,
+	emoji: current.emoji,
+	archived: false
+})
+
+const settings = await kiai.rewards.getPathSettings("guild_id")
+await kiai.rewards.setPathSettings("guild_id", { allowRewardPathSwitching: true })
+const memberPath = await kiai.rewards.getMemberPath("guild_id", "user_id")
+await kiai.rewards.assignMemberPath("guild_id", "user_id", {
+	rewardPathId: path.id,
+	expectedRewardPathId: memberPath.rewardPathId
+})
+```
+
+Assignment returns `synced` as well as the member and path IDs. Omit `expectedRewardPathId` to skip the concurrency check; `null` expects no current path. Role reward create/update inputs also accept `rewardPathId`: `null` means Everyone, while omission on update preserves the current assignment. Other reward types do not accept it. Path operations require the guild's rewards-path experiment and appropriate API permissions; server errors propagate normally. An archived path cannot be newly assigned.
 
 ## License
 

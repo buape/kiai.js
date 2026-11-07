@@ -32,6 +32,7 @@ export type GuildSettings = {
 	reactionXpReceived: number
 	reactionXpGivenSuper: number
 	reactionXpReceivedSuper: number
+	allowRewardPathSwitching: boolean
 	stackRoleRewards: boolean
 	reverseRoleRewardsOnLevelDown: boolean
 	reverseMoneyRewardsOnLevelDown: boolean

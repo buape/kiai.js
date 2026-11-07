@@ -39,6 +39,7 @@ export type RoleReward = {
 	threshold: RewardThreshold
 	eligibility: RewardEligibility
 	type: "ROLE"
+	rewardPathId: string | null
 	config: RoleRewardConfig
 }
 
@@ -77,7 +78,10 @@ export type WebhookReward = {
 export type Reward = RoleReward | MoneyReward | MessageReward | NicknameReward | WebhookReward
 
 export type CreateReward =
-	| Omit<RoleReward, "id">
+	| (Omit<RoleReward, "id" | "rewardPathId"> & {
+			/** Null means Everyone; omit on replacement to preserve the assignment. */
+			rewardPathId?: string | null
+	  })
 	| Omit<MoneyReward, "id">
 	| Omit<MessageReward, "id">
 	| Omit<NicknameReward, "id">
@@ -142,4 +146,40 @@ export type RewardReconciliationJob = {
 export type QueuedRewardReconciliation = {
 	id: string
 	status: "queued"
+}
+
+/** A guild's selectable reward path. Archive paths via replacePath; there is no delete endpoint. */
+export type RewardPath = {
+	id: string
+	guildId: string
+	name: string
+	description: string
+	emoji: string
+	archived: boolean
+}
+
+export type CreateRewardPath = {
+	name: string
+	description?: string
+	emoji?: string
+	archived?: boolean
+}
+
+/** PUT replaces all editable fields, rather than applying a partial update. */
+export type ReplaceRewardPath = Omit<RewardPath, "id" | "guildId">
+
+export type RewardPathSettings = { allowRewardPathSwitching: boolean }
+
+export type MemberRewardPath = { userId: string; rewardPathId: string | null }
+
+export type AssignMemberRewardPath = {
+	rewardPathId: string
+	/** Omit to skip the concurrency check; null expects no current path. */
+	expectedRewardPathId?: string | null
+}
+
+export type MemberRewardPathAssignment = {
+	userId: string
+	rewardPathId: string
+	synced: boolean
 }
