@@ -1,5 +1,5 @@
 import { afterAll, beforeEach, describe, expect, test } from "bun:test"
-import type { RoleReward } from "../src"
+import type { CreateReward } from "../src"
 import { ids, verifyClient } from "./_setup"
 
 const roleReward = (level: number, roleId: string, operation: "ADD" | "REMOVE") =>
@@ -8,7 +8,7 @@ const roleReward = (level: number, roleId: string, operation: "ADD" | "REMOVE") 
 		eligibility: { requiredRoleId: null },
 		type: "ROLE",
 		config: { roleId, operation, durationMs: null }
-	}) satisfies Omit<RoleReward, "id">
+	}) satisfies CreateReward
 
 describe("Rewards", () => {
 	beforeEach(async () => {
