@@ -1,5 +1,11 @@
 # kiai.js
 
+## 4.1.0
+
+### Minor Changes
+
+- f7fca93: Add support for reward paths
+
 ## 4.0.1
 
 ### Patch Changes
