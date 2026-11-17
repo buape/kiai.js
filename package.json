@@ -1,6 +1,6 @@
 {
 	"name": "kiai.js",
-	"version": "4.0.1",
+	"version": "4.1.0",
 	"description": "The official JS/TS API library for Kiai",
 	"keywords": [
 		"api",
